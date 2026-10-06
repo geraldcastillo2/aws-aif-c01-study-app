@@ -622,3 +622,240 @@
                     ]
                 }
             ],
+            exams: [
+                {
+                    id: 1,
+                    title: "Practice Exam 1 (40 Questions)",
+                    questions: [
+                        { q: "A developer needs to build an AI application that generates code snippets inside the IDE. Which service should be chosen?", options: ["Amazon Q Developer", "Amazon Kendra", "Amazon Comprehend", "AWS Batch"], answer: 0, explanation: "Amazon Q Developer assists engineers with real-time code generation, debugging, and explanation inside modern IDEs." },
+                        { q: "Which tool allows business users to generate predictions from tabular data using a visual drag-and-drop workflow?", options: ["Amazon SageMaker Canvas", "Amazon EC2", "AWS CodePipeline", "Amazon Lex"], answer: 0, explanation: "SageMaker Canvas enables non-coders to create predictive ML models visually." }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Practice Exam 2 (40 Questions)",
+                    questions: [
+                        { q: "What is the primary benefit of deploying RAG instead of Fine-Tuning a Foundation Model?", options: ["RAG reduces inference latency to zero", "RAG avoids altering model weights and retrieves up-to-date factual data", "RAG converts unstructured data into SQL databases", "RAG eliminates the need for AWS IAM permissions"], answer: 1, explanation: "RAG connects models to external data sources dynamically without costly weight updates." }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Practice Exam 3 (40 Questions)",
+                    questions: [
+                        { q: "An company requires an enterprise API to enforce guardrails that filter out adult content and PII from LLM outputs. Which service provides this?", options: ["Amazon Bedrock Guardrails", "Amazon Rekognition", "AWS Artifact", "AWS Shield"], answer: 0, explanation: "Bedrock Guardrails evaluates and redacts unsafe content and sensitive data across models." }
+                    ]
+                }
+            ]
+        };
+
+        // --- APPLICATION LOGIC ENGINE ---
+        let state = {
+            currentModuleId: 1,
+            isExamMode: false,
+            activeTab: 'notes',
+            answers: {},
+            timerInterval: null,
+            timeLeft: 5400
+        };
+
+        function initApp() {
+            renderNav();
+            loadModule(1);
+        }
+
+        function renderNav() {
+            const moduleList = document.getElementById('module-nav');
+            moduleList.innerHTML = courseData.modules.map(m => `
+                <li class="nav-item ${m.id === state.currentModuleId && !state.isExamMode ? 'active' : ''}" onclick="selectModule(${m.id})">
+                    <span>${m.title.split(':')[0]}</span>
+                    <span class="badge">${m.questions.length} Qs</span>
+                </li>
+            `).join('');
+
+            const examList = document.getElementById('exam-nav');
+            examList.innerHTML = courseData.exams.map(e => `
+                <li class="nav-item ${e.id === state.currentModuleId && state.isExamMode ? 'active' : ''}" onclick="selectExam(${e.id})">
+                    <span>${e.title}</span>
+                    <span class="badge">Exam</span>
+                </li>
+            `).join('');
+        }
+
+        function selectModule(id) {
+            state.currentModuleId = id;
+            state.isExamMode = false;
+            state.answers = {};
+            renderNav();
+            loadModule(id);
+        }
+
+        function selectExam(id) {
+            state.currentModuleId = id;
+            state.isExamMode = true;
+            state.answers = {};
+            renderNav();
+            loadExam(id);
+        }
+
+        function loadModule(id) {
+            const module = courseData.modules.find(m => m.id === id);
+            document.getElementById('view-title').innerText = module.title;
+            document.getElementById('notes-view').style.display = 'block';
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('toggle-quiz-btn').innerText = 'Take Module Quiz';
+            document.getElementById('toggle-quiz-btn').style.display = 'block';
+            document.getElementById('exam-timer').style.display = 'none';
+
+            document.getElementById('notes-view').innerHTML = module.notes;
+            renderQuizQuestions(module.questions);
+        }
+
+        function loadExam(id) {
+            const exam = courseData.exams.find(e => e.id === id);
+            document.getElementById('view-title').innerText = exam.title;
+            document.getElementById('notes-view').style.display = 'none';
+            document.getElementById('quiz-view').style.display = 'block';
+            document.getElementById('quiz-view').classList.add('active');
+            document.getElementById('toggle-quiz-btn').style.display = 'none';
+            document.getElementById('exam-timer').style.display = 'block';
+
+            renderQuizQuestions(exam.questions);
+            startTimer();
+        }
+
+        function toggleMode() {
+            const notesView = document.getElementById('notes-view');
+            const quizView = document.getElementById('quiz-view');
+            const btn = document.getElementById('toggle-quiz-btn');
+
+            if (quizView.style.display === 'none' || !quizView.style.display) {
+                notesView.style.display = 'none';
+                quizView.style.display = 'block';
+                quizView.classList.add('active');
+                btn.innerText = 'Back to Notes';
+            } else {
+                notesView.style.display = 'block';
+                quizView.style.display = 'none';
+                quizView.classList.remove('active');
+                btn.innerText = 'Take Module Quiz';
+            }
+        }
+
+        function renderQuizQuestions(questions) {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = questions.map((q, qIndex) => `
+                <div class="question-card" id="q-card-${qIndex}">
+                    <div class="question-header">
+                        <span>Question ${qIndex + 1} of ${questions.length}</span>
+                    </div>
+                    <div class="question-text">${q.q}</div>
+                    <div class="options-list">
+                        ${q.options.map((opt, oIndex) => `
+                            <div class="option-item" id="opt-${qIndex}-${oIndex}" onclick="selectOption(${qIndex},${oIndex})">
+                                <strong>${String.fromCharCode(65 + oIndex)}.</strong>${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="exp-${qIndex}" style="display: none;">
+                        <strong>AWS Exam Explanation:</strong>
+                        ${q.explanation}
+                    </div>
+                </div>
+            `).join('') + `
+                <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; margin-top: 20px;" onclick="submitQuiz()">Submit Answers</button>
+            `;
+        }
+
+        function selectOption(qIndex, oIndex) {
+            state.answers[qIndex] = oIndex;
+            const parent = document.getElementById(`q-card-${qIndex}`);
+            const options = parent.querySelectorAll('.option-item');
+            options.forEach((opt, idx) => {
+                if (idx === oIndex) opt.classList.add('selected');
+                else opt.classList.remove('selected');
+            });
+        }
+
+        function submitQuiz() {
+            const questions = state.isExamMode 
+                ? courseData.exams.find(e => e.id === state.currentModuleId).questions 
+                : courseData.modules.find(m => m.id === state.currentModuleId).questions;
+
+            let score = 0;
+            questions.forEach((q, qIndex) => {
+                const selected = state.answers[qIndex];
+                const exp = document.getElementById(`exp-${qIndex}`);
+                if (exp) exp.style.display = 'block';
+
+                q.options.forEach((_, oIndex) => {
+                    const optEl = document.getElementById(`opt-${qIndex}-${oIndex}`);
+                    if (!optEl) return;
+
+                    if (oIndex === q.answer) optEl.classList.add('correct');
+                    if (selected === oIndex && selected !== q.answer) optEl.classList.add('incorrect');
+                });
+
+                if (selected === q.answer) score++;
+            });
+
+            document.getElementById('results-tab-btn').style.display = 'inline-block';
+            setQuizTab('results');
+            renderResults(score, questions.length);
+        }
+
+        function renderResults(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            const passed = percentage >= 75;
+            const resultsContainer = document.getElementById('quiz-results-container');
+            resultsContainer.innerHTML = `
+                <div class="card results-card">
+                    <h3>${passed ? 'PASSED! 🎉' : 'KEEP STUDYING! 📚'}</h3>
+                    <div class="score-circle" style="border-color: ${passed ? 'var(--success)' : 'var(--error)'}; color: ${passed ? 'var(--success)' : 'var(--error)'}">
+                        ${percentage}%
+                    </div>
+                    <p>You answered <strong>${score}</strong> out of <strong>${total}</strong> questions correctly.</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">AWS Official Passing Threshold: 75%</p>
+                    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="setQuizTab('questions')">Review Detailed Answers</button>
+                </div>
+            `;
+        }
+
+        function setQuizTab(tab) {
+            state.activeTab = tab;
+            const qBtn = document.getElementById('quiz-mode-btn');
+            const rBtn = document.getElementById('results-tab-btn');
+            const qContainer = document.getElementById('quiz-questions-container');
+            const rContainer = document.getElementById('quiz-results-container');
+
+            if (tab === 'questions') {
+                qBtn.classList.add('active');
+                rBtn.classList.remove('active');
+                qContainer.style.display = 'block';
+                rContainer.style.display = 'none';
+            } else {
+                rBtn.classList.add('active');
+                qBtn.classList.remove('active');
+                qContainer.style.display = 'none';
+                rContainer.style.display = 'block';
+            }
+        }
+
+        function startTimer() {
+            clearInterval(state.timerInterval);
+            state.timeLeft = 5400;
+            state.timerInterval = setInterval(() => {
+                state.timeLeft--;
+                const mins = Math.floor(state.timeLeft / 60);
+                const secs = state.timeLeft % 60;
+                document.getElementById('exam-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
