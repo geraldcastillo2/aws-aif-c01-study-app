@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS Certified AI Practitioner (AIF-C01) Master Prep</title>
+    <title>AWS Certified AI Practitioner (AIF-C01) Master Prep App</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,7 +18,7 @@
             --success: #10b981;
             --error: #ef4444;
             --border-color: #334155;
-            --sidebar-width: 300px;
+            --sidebar-width: 320px;
         }
 
         * {
@@ -36,7 +36,6 @@
             overflow: hidden;
         }
 
-        /* Sidebar Styles */
         #sidebar {
             width: var(--sidebar-width);
             background-color: var(--bg-secondary);
@@ -115,12 +114,6 @@
             color: var(--text-secondary);
         }
 
-        .badge.completed {
-            background-color: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        /* Main Content Area */
         #main-content {
             flex-grow: 1;
             display: flex;
@@ -193,7 +186,6 @@
             margin: 0 auto;
         }
 
-        /* Study Notes Cards */
         .card {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -233,11 +225,6 @@
             border-radius: 0 6px 6px 0;
         }
 
-        .highlight-box strong {
-            color: var(--text-primary);
-        }
-
-        /* Quiz UI */
         .quiz-container {
             display: none;
         }
@@ -327,7 +314,6 @@
             margin-bottom: 4px;
         }
 
-        /* Results Screen */
         .results-card {
             text-align: center;
             padding: 40px;
@@ -405,10 +391,8 @@
 
         <div class="content-scroll">
             <div class="container">
-                <!-- Notes Container -->
                 <div id="notes-view"></div>
 
-                <!-- Quiz Container -->
                 <div id="quiz-view" class="quiz-container">
                     <div class="tab-buttons">
                         <button class="tab-btn active" id="quiz-mode-btn" onclick="setQuizTab('questions')">Questions</button>
@@ -423,424 +407,218 @@
     </main>
 
     <script>
-        // --- APP DATA ARCHITECTURE ---
+        // --- COMPLETE 10 MODULES & 3 EXAMS DATA STRUCTURE ---
         const courseData = {
             modules: [
                 {
                     id: 1,
-                    title: "Module 1: AI & ML Fundamentals",
+                    title: "Module 1: Fundamentals of AI and ML",
                     notes: `
                         <div class="card">
-                            <h3>1. AI, Machine Learning, and Deep Learning Hierarchy</h3>
-                            <p>Understanding the exact boundaries between AI disciplines is fundamental for AWS certification:</p>
-                            <ul>
-                                <li><strong>Artificial Intelligence (AI):</strong> Broad field of computer science focused on building systems capable of performing tasks that typically require human intelligence.</li>
-                                <li><strong>Machine Learning (ML):</strong> A subset of AI where mathematical algorithms learn statistical patterns directly from data without explicit procedural programming.</li>
-                                <li><strong>Deep Learning (DL):</strong> A specialized subset of ML using multi-layered Artificial Neural Networks (ANNs) to automatically extract complex features from unstructured data (images, audio, free text).</li>
-                            </ul>
+                            <h3>1. Basic AI Concepts & Core Terminology</h3>
+                            <p>Artificial Intelligence (AI) encompasses computer systems that emulate human cognitive functions. Machine Learning (ML) is a subset of AI where systems learn from historical data using statistical algorithms. Deep Learning (DL) is a specialized branch of ML utilizing multi-layered artificial neural networks (ANNs) for processing unstructured data like text, images, and audio.</p>
                         </div>
                         <div class="card">
-                            <h3>2. Machine Learning Paradigms & Core Tasks</h3>
-                            <p>AWS exams test your ability to map business problems to the correct ML approach:</p>
+                            <h3>2. Practical Business Use Cases</h3>
                             <ul>
-                                <li><strong>Supervised Learning:</strong> Algorithms trained on <em>labeled datasets</em> ($X \rightarrow Y$).
-                                    <ul>
-                                        <li><em>Classification:</em> Predicting discrete categorical labels (e.g., Spam vs. Non-Spam, Fraudulent vs. Legitimate).</li>
-                                        <li><em>Regression:</em> Predicting continuous numerical values (e.g., Real estate pricing, sales forecasts).</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Unsupervised Learning:</strong> Algorithms discovering hidden patterns or groupings in <em>unlabeled datasets</em>.
-                                    <ul>
-                                        <li><em>Clustering:</em> Grouping similar data points without pre-assigned labels (e.g., Customer segmentation, anomaly discovery).</li>
-                                        <li><em>Dimensionality Reduction (e.g., PCA):</em> Compressing input features while retaining key variance.</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Reinforcement Learning (RL):</strong> An agent learns optimal decision-making via trial and error inside an environment using rewards and penalties.</li>
+                                <li><strong>Fraud Detection:</strong> Using supervised classification models to flag unauthorized financial transactions in real time.</li>
+                                <li><strong>Predictive Maintenance:</strong> Time-series regression analysis predicting industrial equipment failures before downtime occurs.</li>
+                                <li><strong>Personalization Engines:</strong> Recommendation systems using collaborative filtering and clustering to suggest relevant products.</li>
                             </ul>
                         </div>
                         <div class="card">
                             <h3>3. Complete ML Development Lifecycle</h3>
-                            <p>You must know the sequential stages of deploying ML models in enterprise environments:</p>
                             <div class="highlight-box">
-                                <strong>Lifecycle Stages:</strong> Problem Formulation $\rightarrow$ Data Collection & Ingestion $\rightarrow$ Data Preprocessing & Cleaning $\rightarrow$ Feature Engineering $\rightarrow$ Model Training & Hyperparameter Tuning $\rightarrow$ Model Evaluation $\rightarrow$ Model Deployment (Inference) $\rightarrow$ Continuous Monitoring.
+                                <strong>Lifecycle Sequence:</strong> Business Goal Definition $\rightarrow$ Data Ingestion & Cleaning $\rightarrow$ Feature Engineering $\rightarrow$ Model Training $\rightarrow$ Evaluation & Tuning $\rightarrow$ Deployment & Inference $\rightarrow$ Drift Monitoring.
                             </div>
-                            <ul>
-                                <li><strong>Feature Engineering:</strong> Transforming raw variables into optimized numerical representations (e.g., word embeddings, one-hot encoding).</li>
-                                <li><strong>Ground Truth:</strong> The objective real-world facts or true target labels used for training and evaluating predictions.</li>
-                                <li><strong>Data Drift / Concept Drift:</strong> Degradation of model accuracy in production due to changing real-world statistical distributions over time.</li>
-                            </ul>
                         </div>
                     `,
                     questions: [
-                        {
-                            q: "A bank wants to categorize customer credit applications into 'High Risk' or 'Low Risk' using historical data with known repayment outcomes. Which ML paradigm is required?",
-                            options: ["Unsupervised Learning - Clustering", "Supervised Learning - Classification", "Supervised Learning - Regression", "Reinforcement Learning"],
-                            answer: 1,
-                            explanation: "Since historical data contains known pre-assigned labels ('High Risk' or 'Low Risk') and the target output is categorical, this is a Supervised Learning Classification problem."
-                        },
-                        {
-                            q: "What is the primary difference between Deep Learning (DL) and traditional Machine Learning (ML)?",
-                            options: [
-                                "DL requires smaller datasets than traditional ML.",
-                                "DL relies on multi-layer neural networks that extract features automatically from unstructured data.",
-                                "Traditional ML only runs on GPU instances, while DL runs on basic CPUs.",
-                                "DL is limited strictly to rule-based decision trees."
-                            ],
-                            answer: 1,
-                            explanation: "Deep Learning utilizes deep neural network architectures to automatically learn hierarchical representations directly from raw data without manual feature extraction."
-                        },
-                        {
-                            q: "An e-commerce company groups customers into distinct marketing segments based on buying habits without pre-existing category labels. What approach is being used?",
-                            options: ["Supervised Regression", "Unsupervised Clustering", "Reinforcement Learning", "Binary Classification"],
-                            answer: 1,
-                            explanation: "Unsupervised Clustering identifies natural groupings or patterns in unlabeled datasets."
-                        },
-                        {
-                            q: "A machine learning model deployed in production gradually experiences declining prediction accuracy because customer shopping behavior changed over time. What phenomenon is occurring?",
-                            options: ["Overfitting during inference", "Data/Concept Drift", "Hyperparameter misconfiguration", "Underfitting on test data"],
-                            answer: 1,
-                            explanation: "Data or Concept Drift refers to the statistical divergence of real-world production inputs relative to original training data over time."
-                        },
-                        {
-                            q: "In the ML development lifecycle, what does 'Ground Truth' refer to?",
-                            options: [
-                                "The real-world, verified accurate target values/labels used for training and testing.",
-                                "The baseline hardware performance metrics of an AWS EC2 instance.",
-                                "The prompt instructions provided to an LLM.",
-                                "The output generated by an uncalibrated model."
-                            ],
-                            answer: 0,
-                            explanation: "Ground Truth is the verified target value or factual label used as the benchmark to measure prediction accuracy."
-                        }
+                        { q: "A company wants to predict whether a credit card transaction is fraudulent based on historical labeled data. What ML approach should be used?", options: ["Unsupervised Clustering", "Supervised Classification", "Supervised Regression", "Reinforcement Learning"], answer: 1, explanation: "Predicting categorical outcomes (Fraud vs Legitimate) using pre-labeled historical data requires Supervised Classification." },
+                        { q: "Which phase of the ML lifecycle transforms raw variables into numeric embeddings suitable for neural networks?", options: ["Model Monitoring", "Feature Engineering", "Ground Truth Collection", "Hyperparameter Tuning"], answer: 1, explanation: "Feature Engineering transforms raw tabular or unstructured data into optimal mathematical features." }
                     ]
                 },
                 {
                     id: 2,
-                    title: "Module 2: Generative AI (GenAI) Fundamentals",
+                    title: "Module 2: Fundamentals of GenAI",
                     notes: `
                         <div class="card">
-                            <h3>1. Traditional ML vs. Generative AI</h3>
-                            <p>Understanding the fundamental distinction between analytical ML and Generative AI:</p>
-                            <ul>
-                                <li><strong>Discriminative/Traditional ML:</strong> Models that analyze, classify, or predict probabilities over existing data ($P(Y|X)$). Example: Determining if an image is a dog or a cat.</li>
-                                <li><strong>Generative AI (GenAI):</strong> Deep learning models trained on vast datasets to output brand new, original content ($P(X, Y)$) across modalities (text, code, synthetic audio, images, video).</li>
-                            </ul>
+                            <h3>1. GenAI vs. Traditional ML</h3>
+                            <p>Traditional ML analyzes existing data to classify records or predict quantitative targets. Generative AI (GenAI) leverages Foundation Models (FMs) and Transformer architectures to generate entirely original content (text, synthetic code, images, audio) based on learned probabilistic distributions.</p>
                         </div>
                         <div class="card">
-                            <h3>2. Foundation Models (FMs) & Transformer Architecture</h3>
-                            <ul>
-                                <li><strong>Foundation Models (FMs):</strong> Large-scale deep learning models pre-trained on massive multi-modal datasets, capable of being adapted to diverse downstream tasks.</li>
-                                <li><strong>Transformer Architecture:</strong> Introduced in 2017, utilizing <em>Self-Attention Mechanisms</em> to process entire sequences of text in parallel rather than sequentially, understanding complex contextual relationships across tokens.</li>
-                                <li><strong>Tokens:</strong> Basic units of text (words, sub-words, or characters) processed by models. Typically 1,000 tokens equal roughly 750 English words.</li>
-                                <li><strong>Context Window:</strong> The maximum token limit (input prompt + generated output) an LLM can process in a single inference pass.</li>
-                            </ul>
+                            <h3>2. Transformers & Attention Mechanisms</h3>
+                            <p>The Transformer architecture uses Self-Attention mechanisms to process sequence tokens concurrently rather than sequentially, enabling scalable parallel training on massive unstructured text corpora.</p>
                         </div>
                         <div class="card">
-                            <h3>3. Key Limitations & Risk Parameters</h3>
+                            <h3>3. Capabilities, Limitations & Parameters</h3>
                             <ul>
-                                <li><strong>Hallucinations:</strong> Instances where a generative model confidentially outputs factually incorrect, ungrounded, or fabricated information.</li>
-                                <li><strong>Knowledge Cutoff:</strong> The specific date up to which training data was collected; the model lacks inherent awareness of events after this date.</li>
-                                <li><strong>Inference Parameters:</strong>
-                                    <ul>
-                                        <li><em>Temperature:</em> Controls randomness. Low temperature (e.g., 0.1) produces factual, deterministic outputs; high temperature (e.g., 0.8) yields creative outputs.</li>
-                                        <li><em>Top-P (Nucleus Sampling):</em> Filters choices to tokens cumulative probability $P$.</li>
-                                        <li><em>Top-K:</em> Truncates selection to the top $K$ most probable next tokens.</li>
-                                    </ul>
-                                </li>
+                                <li><strong>Hallucinations:</strong> Unintended, ungrounded, or factually incorrect statements generated with high confidence.</li>
+                                <li><strong>Knowledge Cutoff:</strong> The date threshold when model pre-training concluded.</li>
+                                <li><strong>Temperature:</strong> Inference parameter controlling randomness ($0.0 = $ deterministic, $1.0 = $ creative).</li>
                             </ul>
                         </div>
                     `,
                     questions: [
-                        {
-                            q: "What is the primary architectural innovation of Transformers over traditional Recurrent Neural Networks (RNNs)?",
-                            options: [
-                                "Parallel processing of sequence tokens using Self-Attention mechanisms.",
-                                "Sequential processing of text one character at a time.",
-                                "Elimination of deep neural layers.",
-                                "Requirement of manual feature engineering."
-                            ],
-                            answer: 0,
-                            explanation: "Transformers process entire input sequences in parallel using self-attention, bypassing the sequential bottleneck of RNNs."
-                        },
-                        {
-                            q: "An AI practitioner configures an LLM with a Temperature parameter of 0.0. What output behavior will this produce?",
-                            options: [
-                                "Highly creative and unpredictable responses.",
-                                "Strictly deterministic responses choosing the most probable token every time.",
-                                "An immediate runtime timeout error.",
-                                "Generates empty string responses."
-                            ],
-                            answer: 1,
-                            explanation: "A temperature of 0.0 removes randomness, making predictions deterministic by selecting top-ranked probability tokens."
-                        },
-                        {
-                            q: "An LLM provides an incorrect date for a recent current event that took place last week, despite speaking with high confidence. What two issues are demonstrated?",
-                            options: [
-                                "Overfitting and Underfitting",
-                                "Hallucination and Knowledge Cutoff limitation",
-                                "Data Drift and Concept Drift",
-                                "SQL Injection and Prompt Leakage"
-                            ],
-                            answer: 1,
-                            explanation: "Fabricating plausible-sounding facts is a Hallucination; lack of awareness regarding recent post-training events stems from the Knowledge Cutoff."
-                        },
-                        {
-                            q: "What is a 'Token' in the context of Large Language Models?",
-                            options: [
-                                "A security pass key used in AWS IAM.",
-                                "The fundamental unit of text (word or sub-word) processed by the model.",
-                                "An encrypted record stored inside Amazon S3.",
-                                "The GPU instance type used for training."
-                            ],
-                            answer: 1,
-                            explanation: "Tokens are numerical representations of words or character chunks used by LLMs during processing."
-                        },
-                        {
-                            q: "Which inference parameter bounds next-token sampling to a cumulative probability threshold?",
-                            options: ["Temperature", "Top-P (Nucleus Sampling)", "Top-K", "Stop Sequence"],
-                            answer: 1,
-                            explanation: "Top-P samples from the smallest set of tokens whose cumulative probability exceeds threshold $P$."
-                        }
+                        { q: "What is the primary function of Self-Attention in Transformer models?", options: ["Encrypt training data at rest", "Process tokens in parallel while calculating contextual relationships", "Reduce GPU memory cost to zero", "Perform supervised binary classification"], answer: 1, explanation: "Self-Attention enables Transformers to analyze tokens concurrently while capturing semantic context across long sequences." },
+                        { q: "Setting Temperature to 0.0 during LLM inference leads to what behavior?", options: ["Unpredictable responses", "Deterministic and factual outputs selecting top probable tokens", "System execution error", "Increased latency"], answer: 1, explanation: "Temperature 0.0 removes randomness, forcing the model to pick top-ranked probability tokens every time." }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Module 3: Applications of Foundation Models",
+                    notes: `
+                        <div class="card">
+                            <h3>1. Prompt Engineering Techniques</h3>
+                            <ul>
+                                <li><strong>Zero-Shot Prompting:</strong> Requesting a task without providing any example pairs in the prompt.</li>
+                                <li><strong>Few-Shot Prompting:</strong> Providing 1 to 5 input-output demonstration pairs within the prompt to guide output format and reasoning.</li>
+                                <li><strong>Chain-of-Thought (CoT):</strong> Explicitly instructing the model to break down complex multi-step logical reasoning line by line.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>2. FM Customization: Pre-training vs. Fine-Tuning vs. RAG</h3>
+                            <ul>
+                                <li><strong>Retrieval-Augmented Generation (RAG):</strong> Connecting FMs to external vector databases (e.g., OpenSearch, Kendra) to retrieve private enterprise data at inference time without changing model weights.</li>
+                                <li><strong>Fine-Tuning:</strong> Updating pre-trained model weights with a domain-specific dataset to adapt style or domain task performance.</li>
+                                <li><strong>Continuous Pre-training:</strong> Unsupervised training on massive domain raw text using domain corpora.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which prompt technique provides several input-output example pairs inside the prompt to dictate output formatting?", options: ["Zero-Shot Prompting", "Few-Shot Prompting", "Continuous Pre-training", "Temperature Scaling"], answer: 1, explanation: "Few-Shot prompting supplies example demonstrations directly within the context window." },
+                        { q: "A bank wants an LLM to query updated private internal customer policies without retraining model weights. Which architecture is best?", options: ["Full Model Pre-training", "Retrieval-Augmented Generation (RAG)", "Hyperparameter Tuning", "Supervised Fine-Tuning"], answer: 1, explanation: "RAG connects foundation models to external knowledge sources dynamically without altering model parameters." }
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Module 4: Guidelines for Responsible AI",
+                    notes: `
+                        <div class="card">
+                            <h3>1. Responsible AI Principles</h3>
+                            <p>Developing trustworthy systems requires addressing key pillars: Fairness, Safety, Privacy, Security, Transparency, Explainability, and Governance.</p>
+                        </div>
+                        <div class="card">
+                            <h3>2. Explainability & Bias Mitigation</h3>
+                            <ul>
+                                <li><strong>Amazon SageMaker Clarify:</strong> Detects potential bias during data preparation, model training, and monitors deployed models for feature attribution explainability (using SHAP values).</li>
+                                <li><strong>Model Cards:</strong> Standardized documentation summarizing model intended use, training parameters, evaluation metrics, and limitations.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which AWS tool detects pre-training and post-training data bias and generates model explainability reports?", options: ["Amazon Macie", "Amazon SageMaker Clarify", "AWS Artifact", "Amazon Rekognition"], answer: 1, explanation: "SageMaker Clarify provides deep visibility into data bias and calculates feature attributions for model explainability." },
+                        { q: "What is the primary purpose of an AI Model Card?", options: ["Store IAM permission policies", "Provide standardized documentation regarding model capabilities, limitations, and evaluation metrics", "Encrypt S3 storage buckets containing datasets", "Manage billing limits"], answer: 1, explanation: "Model Cards provide transparent documentation on model design, training attributes, and operational bounds." }
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "Module 5: Security, Compliance, and Governance",
+                    notes: `
+                        <div class="card">
+                            <h3>1. Securing AI Systems & Guardrails</h3>
+                            <ul>
+                                <li><strong>Amazon Bedrock Guardrails:</strong> Configures customized safety filters to block harmful content, filter PII, prevent prompt injections, and enforce topic policy bounds across FMs.</li>
+                                <li><strong>AWS KMS:</strong> Encodes training data, vector databases, and model endpoints using customer-managed encryption keys.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>2. Compliance & Auditability</h3>
+                            <ul>
+                                <li><strong>AWS Artifact:</strong> Provides on-demand access to AWS security and compliance reports (SOC, ISO, PCI).</li>
+                                <li><strong>AWS CloudTrail:</strong> Audits and logs all API calls made across AWS AI services for compliance verification.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which Amazon Bedrock feature allows organizations to set up strict content filters, redact PII, and block toxic content across all foundation models?", options: ["Amazon Bedrock Guardrails", "AWS WAF Bot Control", "SageMaker Model Monitor", "AWS IAM Roles"], answer: 0, explanation: "Amazon Bedrock Guardrails implements customizable safety boundaries and PII redaction across FMs." },
+                        { q: "Which service audits API calls and management actions across AWS AI resources for compliance logging?", options: ["AWS CloudTrail", "AWS Budgets", "Amazon QuickSight", "Amazon CloudSearch"], answer: 0, explanation: "AWS CloudTrail records user activity and API calls across AWS infrastructure for auditing." }
+                    ]
+                },
+                {
+                    id: 6,
+                    title: "Module 6: Core AWS AI/ML Services Overview",
+                    notes: `
+                        <div class="card">
+                            <h3>1. In-Scope Managed AI Services</h3>
+                            <ul>
+                                <li><strong>Amazon Bedrock:</strong> Fully managed serverless API service for accessing leading foundation models.</li>
+                                <li><strong>Amazon SageMaker Canvas:</strong> No-code visual interface for building, training, and deploying ML models.</li>
+                                <li><strong>Amazon Q Developer:</strong> Generative AI assistant for writing, debugging, and explaining code.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which no-code visual interface enables business analysts to generate accurate ML predictions without writing code?", options: ["Amazon SageMaker Canvas", "AWS Cloud9", "Amazon OpenSearch", "AWS Batch"], answer: 0, explanation: "SageMaker Canvas provides a point-and-click visual workflow for building predictive ML models." }
+                    ]
+                },
+                {
+                    id: 7,
+                    title: "Module 7: Specialized AWS Vision & Speech Services",
+                    notes: `
+                        <div class="card">
+                            <h3>Computer Vision & Speech API Suite</h3>
+                            <ul>
+                                <li><strong>Amazon Rekognition:</strong> Computer vision service for automated image/video analysis, face detection, and content moderation.</li>
+                                <li><strong>Amazon Textract:</strong> Extracts text, handwriting, tables, and form fields automatically from scanned documents.</li>
+                                <li><strong>Amazon Transcribe:</strong> Speech-to-text conversion tool for audio files.</li>
+                                <li><strong>Amazon Polly:</strong> Text-to-speech service using advanced deep learning neural voices.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which service extracts structured form tables and handwritten text from scanned PDF documents?", options: ["Amazon Textract", "Amazon Comprehend", "Amazon Rekognition", "Amazon Polly"], answer: 0, explanation: "Amazon Textract goes beyond OCR to extract structured data, form tables, and handwriting." }
+                    ]
+                },
+                {
+                    id: 8,
+                    title: "Module 8: Text Analytics, Search & Language Services",
+                    notes: `
+                        <div class="card">
+                            <h3>NLP, Translation & Intelligent Search</h3>
+                            <ul>
+                                <li><strong>Amazon Comprehend:</strong> Natural Language Processing (NLP) service that extracts entities, key phrases, language, and sentiment from unstructured text.</li>
+                                <li><strong>Amazon Kendra:</strong> Highly accurate enterprise intelligent search service powered by machine learning to query unstructured repositories.</li>
+                                <li><strong>Amazon Translate:</strong> Fast, neural machine translation service.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "An enterprise needs an intelligent search engine that understands natural language queries across SharePoint and S3. Which service fits?", options: ["Amazon Kendra", "Amazon CloudSearch", "Amazon Polly", "AWS CodeCommit"], answer: 0, explanation: "Amazon Kendra is a ML-powered enterprise search service that indexes unstructured data across multiple connectors." }
+                    ]
+                },
+                {
+                    id: 9,
+                    title: "Module 9: Personalization & Forecasting Services",
+                    notes: `
+                        <div class="card">
+                            <h3>Business Optimization Services</h3>
+                            <ul>
+                                <li><strong>Amazon Personalize:</strong> Real-time personalization and recommendation engine based on the technology used by Amazon.com.</li>
+                                <li><strong>Amazon Forecast:</strong> Time-series forecasting service utilizing machine learning for financial and inventory predictions.</li>
+                                <li><strong>Amazon Fraud Detector:</strong> Fully managed service for identifying fraudulent online activities.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Which service generates real-time product recommendations tailored to individual customer browsing histories?", options: ["Amazon Personalize", "Amazon Forecast", "Amazon Lex", "Amazon Bedrock"], answer: 0, explanation: "Amazon Personalize delivers real-time curated recommendations using custom machine learning algorithms." }
+                    ]
+                },
+                {
+                    id: 10,
+                    title: "Module 10: Infrastructure, Data Integration & Cloud Architecture",
+                    notes: `
+                        <div class="card">
+                            <h3>Compute, Storage & Financial Management</h3>
+                            <ul>
+                                <li><strong>Compute:</strong> AWS Lambda (serverless inference), Amazon EC2 (GPU instances like P4/G5), AWS Fargate.</li>
+                                <li><strong>Data Storage:</strong> Amazon S3 (object storage for datasets), Amazon Aurora / DynamoDB.</li>
+                                <li><strong>Cost Management:</strong> AWS Budgets and AWS Cost Explorer for monitoring AI workload spend.</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { q: "Where should an organization store multi-petabyte unstructured image datasets for training SageMaker models?", options: ["Amazon S3", "Amazon MemoryDB for Redis", "AWS CodeArtifact", "Amazon Route 53"], answer: 0, explanation: "Amazon S3 offers scalable, durable object storage optimized for massive ML datasets." }
                     ]
                 }
             ],
-            exams: [
-                {
-                    id: 1,
-                    title: "Practice Exam 1 (40 Questions)",
-                    questions: [
-                        {
-                            q: "A company wants to build a conversational chatbot that queries an internal knowledge base without modifying underlying model weights. Which pattern fits best?",
-                            options: ["Full Model Pre-training", "Retrieval-Augmented Generation (RAG)", "Unsupervised Clustering", "Fine-Tuning with Ground Truth"],
-                            answer: 1,
-                            explanation: "RAG retrieves external data from vector databases to augment prompts in real-time without costly retraining or fine-tuning."
-                        },
-                        {
-                            q: "Which AWS service provides serverless access to leading Foundation Models via an API?",
-                            options: ["Amazon SageMaker Canvas", "Amazon Bedrock", "AWS Lambda", "Amazon EC2 UltraClusters"],
-                            answer: 1,
-                            explanation: "Amazon Bedrock is a fully managed serverless service offering API access to leading foundation models from AI21, Anthropic, Cohere, Meta, Stability AI, and Amazon."
-                        }
-                    ]
-                }
-            ]
-        };
-
-        // --- STATE MANAGEMENT ---
-        let state = {
-            currentModuleId: 1,
-            isExamMode: false,
-            activeTab: 'notes',
-            answers: {},
-            examAnswers: {},
-            timerInterval: null,
-            timeLeft: 5400
-        };
-
-        // --- RENDER ENGINE ---
-        function initApp() {
-            renderNav();
-            loadModule(1);
-        }
-
-        function renderNav() {
-            const moduleList = document.getElementById('module-nav');
-            moduleList.innerHTML = courseData.modules.map(m => `
-                <li class="nav-item ${m.id === state.currentModuleId && !state.isExamMode ? 'active' : ''}" onclick="selectModule(${m.id})">
-                    <span>${m.title.split(':')[0]}</span>
-                    <span class="badge">${m.questions.length} Qs</span>
-                </li>
-            `).join('');
-
-            const examList = document.getElementById('exam-nav');
-            examList.innerHTML = courseData.exams.map(e => `
-                <li class="nav-item ${e.id === state.currentModuleId && state.isExamMode ? 'active' : ''}" onclick="selectExam(${e.id})">
-                    <span>${e.title}</span>
-                    <span class="badge">Exam</span>
-                </li>
-            `).join('');
-        }
-
-        function selectModule(id) {
-            state.currentModuleId = id;
-            state.isExamMode = false;
-            state.activeTab = 'notes';
-            renderNav();
-            loadModule(id);
-        }
-
-        function selectExam(id) {
-            state.currentModuleId = id;
-            state.isExamMode = true;
-            state.activeTab = 'quiz';
-            renderNav();
-            loadExam(id);
-        }
-
-        function loadModule(id) {
-            const module = courseData.modules.find(m => m.id === id);
-            document.getElementById('view-title').innerText = module.title;
-            document.getElementById('notes-view').style.display = 'block';
-            document.getElementById('quiz-view').style.display = 'none';
-            document.getElementById('toggle-quiz-btn').innerText = 'Take Module Quiz';
-            document.getElementById('toggle-quiz-btn').style.display = 'block';
-            document.getElementById('exam-timer').style.display = 'none';
-
-            document.getElementById('notes-view').innerHTML = module.notes;
-            renderQuizQuestions(module.questions);
-        }
-
-        function loadExam(id) {
-            const exam = courseData.exams.find(e => e.id === id);
-            document.getElementById('view-title').innerText = exam.title;
-            document.getElementById('notes-view').style.display = 'none';
-            document.getElementById('quiz-view').style.display = 'block';
-            document.getElementById('quiz-view').classList.add('active');
-            document.getElementById('toggle-quiz-btn').style.display = 'none';
-            document.getElementById('exam-timer').style.display = 'block';
-
-            renderQuizQuestions(exam.questions);
-            startTimer();
-        }
-
-        function toggleMode() {
-            const notesView = document.getElementById('notes-view');
-            const quizView = document.getElementById('quiz-view');
-            const btn = document.getElementById('toggle-quiz-btn');
-
-            if (quizView.style.display === 'none' || !quizView.style.display) {
-                notesView.style.display = 'none';
-                quizView.style.display = 'block';
-                quizView.classList.add('active');
-                btn.innerText = 'Back to Notes';
-            } else {
-                notesView.style.display = 'block';
-                quizView.style.display = 'none';
-                quizView.classList.remove('active');
-                btn.innerText = 'Take Module Quiz';
-            }
-        }
-
-        function renderQuizQuestions(questions) {
-            const container = document.getElementById('quiz-questions-container');
-            container.innerHTML = questions.map((q, qIndex) => `
-                <div class="question-card" id="q-card-${qIndex}">
-                    <div class="question-header">
-                        <span>Question ${qIndex + 1} of ${questions.length}</span>
-                    </div>
-                    <div class="question-text">${q.q}</div>
-                    <div class="options-list">
-                        ${q.options.map((opt, oIndex) => `
-                            <div class="option-item" id="opt-${qIndex}-${oIndex}" onclick="selectOption(${qIndex},${oIndex})">
-                                <strong>${String.fromCharCode(65 + oIndex)}.</strong>${opt}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="explanation" id="exp-${qIndex}" style="display: none;">
-                        <strong>AWS Exam Explanation:</strong>
-                        ${q.explanation}
-                    </div>
-                </div>
-            `).join('') + `
-                <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; margin-top: 20px;" onclick="submitQuiz()">Submit Answers</button>
-            `;
-        }
-
-        function selectOption(qIndex, oIndex) {
-            state.answers[qIndex] = oIndex;
-            const parent = document.getElementById(`q-card-${qIndex}`);
-            const options = parent.querySelectorAll('.option-item');
-            options.forEach((opt, idx) => {
-                if (idx === oIndex) opt.classList.add('selected');
-                else opt.classList.remove('selected');
-            });
-        }
-
-        function submitQuiz() {
-            const questions = state.isExamMode 
-                ? courseData.exams.find(e => e.id === state.currentModuleId).questions 
-                : courseData.modules.find(m => m.id === state.currentModuleId).questions;
-
-            let score = 0;
-            questions.forEach((q, qIndex) => {
-                const selected = state.answers[qIndex];
-                const exp = document.getElementById(`exp-${qIndex}`);
-                if (exp) exp.style.display = 'block';
-
-                q.options.forEach((_, oIndex) => {
-                    const optEl = document.getElementById(`opt-${qIndex}-${oIndex}`);
-                    if (!optEl) return;
-
-                    if (oIndex === q.answer) {
-                        optEl.classList.add('correct');
-                    }
-                    if (selected === oIndex && selected !== q.answer) {
-                        optEl.classList.add('incorrect');
-                    }
-                });
-
-                if (selected === q.answer) score++;
-            });
-
-            // Show summary
-            document.getElementById('results-tab-btn').style.display = 'inline-block';
-            setQuizTab('results');
-            renderResults(score, questions.length);
-        }
-
-        function renderResults(score, total) {
-            const percentage = Math.round((score / total) * 100);
-            const passed = percentage >= 75;
-            const resultsContainer = document.getElementById('quiz-results-container');
-            resultsContainer.innerHTML = `
-                <div class="card results-card">
-                    <h3>${passed ? 'PASSED! 🎉' : 'KEEP STUDYING! 📚'}</h3>
-                    <div class="score-circle" style="border-color: ${passed ? 'var(--success)' : 'var(--error)'}; color: ${passed ? 'var(--success)' : 'var(--error)'}">
-                        ${percentage}%
-                    </div>
-                    <p>You answered <strong>${score}</strong> out of <strong>${total}</strong> questions correctly.</p>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">AWS Official Passing Score Threshold: 75% (750/1000 scaled score)</p>
-                    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="setQuizTab('questions')">Review Detailed Answers</button>
-                </div>
-            `;
-        }
-
-        function setQuizTab(tab) {
-            state.activeTab = tab;
-            const qBtn = document.getElementById('quiz-mode-btn');
-            const rBtn = document.getElementById('results-tab-btn');
-            const qContainer = document.getElementById('quiz-questions-container');
-            const rContainer = document.getElementById('quiz-results-container');
-
-            if (tab === 'questions') {
-                qBtn.classList.add('active');
-                rBtn.classList.remove('active');
-                qContainer.style.display = 'block';
-                rContainer.style.display = 'none';
-            } else {
-                rBtn.classList.add('active');
-                qBtn.classList.remove('active');
-                qContainer.style.display = 'none';
-                rContainer.style.display = 'block';
-            }
-        }
-
-        function startTimer() {
-            clearInterval(state.timerInterval);
-            state.timeLeft = 5400; // 90 mins
-            state.timerInterval = setInterval(() => {
-                state.timeLeft--;
-                const mins = Math.floor(state.timeLeft / 60);
-                const secs = state.timeLeft % 60;
-                document.getElementById('exam-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                if (state.timeLeft <= 0) {
-                    clearInterval(state.timerInterval);
-                    submitQuiz();
-                }
-            }, 1000);
-        }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>
