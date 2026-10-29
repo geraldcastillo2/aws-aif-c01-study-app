@@ -1,861 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS Certified AI Practitioner (AIF-C01) Master Prep App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --accent-aws: #ff9900;
-            --accent-aws-hover: #e68a00;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --success: #10b981;
-            --error: #ef4444;
-            --border-color: #334155;
-            --sidebar-width: 320px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        #sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            z-index: 10;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: rgba(15, 23, 42, 0.5);
-        }
-
-        .sidebar-header h1 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent-aws);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sidebar-header p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .nav-section-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            padding: 16px 20px 8px 20px;
-            font-weight: 600;
-        }
-
-        .nav-list {
-            list-style: none;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-
-        .nav-item {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            transition: all 0.2s ease;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .nav-item:hover {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .nav-item.active {
-            background-color: rgba(255, 153, 0, 0.1);
-            color: var(--accent-aws);
-            border-left-color: var(--accent-aws);
-            font-weight: 600;
-        }
-
-        .badge {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background-color: var(--bg-tertiary);
-            color: var(--text-secondary);
-        }
-
-        #main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background-color: var(--bg-primary);
-        }
-
-        .top-bar {
-            height: 60px;
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-        }
-
-        .top-bar h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .top-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-aws);
-            color: #000;
-            font-weight: 600;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-aws-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #475569;
-        }
-
-        .content-scroll {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 30px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .card h3 {
-            color: var(--accent-aws);
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .card p, .card ul {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .card ul {
-            padding-left: 20px;
-        }
-
-        .card li {
-            margin-bottom: 6px;
-        }
-
-        .highlight-box {
-            background-color: rgba(255, 153, 0, 0.05);
-            border-left: 4px solid var(--accent-aws);
-            padding: 12px 16px;
-            margin: 16px 0;
-            border-radius: 0 6px 6px 0;
-        }
-
-        .quiz-container {
-            display: none;
-        }
-
-        .quiz-container.active {
-            display: block;
-        }
-
-        .question-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .question-text {
-            font-size: 1.05rem;
-            font-weight: 500;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-item {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            padding: 14px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.9rem;
-        }
-
-        .option-item:hover {
-            border-color: var(--accent-aws);
-            background-color: rgba(255, 153, 0, 0.02);
-        }
-
-        .option-item.selected {
-            border-color: var(--accent-aws);
-            background-color: rgba(255, 153, 0, 0.1);
-        }
-
-        .option-item.correct {
-            border-color: var(--success);
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .option-item.incorrect {
-            border-color: var(--error);
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-        }
-
-        .explanation {
-            margin-top: 16px;
-            padding: 16px;
-            background-color: rgba(51, 65, 85, 0.5);
-            border-radius: 6px;
-            font-size: 0.88rem;
-            line-height: 1.5;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .explanation strong {
-            color: var(--accent-aws);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .results-card {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .score-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 6px solid var(--accent-aws);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 20px auto;
-            color: var(--accent-aws);
-        }
-
-        .tab-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .tab-btn.active {
-            color: var(--accent-aws);
-            background-color: rgba(255, 153, 0, 0.1);
-        }
-
-        .timer-display {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
-            color: var(--accent-aws);
-            font-weight: 600;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>AWS AI Practitioner — Study Lab</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#182230;--muted:#657286;--line:#dce3ec;--brand:#5b45d6;--brand2:#7867ee;--good:#16794b;--bad:#b42318;--soft:#efedff;--shadow:0 10px 28px #1c2b4410}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a{font:inherit}button{cursor:pointer}a{color:var(--brand)}.top{background:#111827;color:white;padding:24px max(20px,calc((100% - 1180px)/2));display:flex;justify-content:space-between;gap:20px;align-items:center}.brand{font-weight:800;letter-spacing:.02em}.top small{color:#c7ceda}.wrap{max-width:1180px;margin:26px auto;padding:0 18px}.hero{background:linear-gradient(125deg,#211b52,#4b3db4 62%,#7867ee);color:white;border-radius:22px;padding:30px;box-shadow:var(--shadow)}.hero h1{font-size:clamp(28px,4vw,42px);line-height:1.12;margin:0 0 12px}.hero p{max-width:780px;color:#e7e5ff;margin:0 0 22px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.stat{background:#ffffff16;border:1px solid #ffffff22;border-radius:13px;padding:13px}.stat b{display:block;font-size:22px}.layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:20px;margin-top:22px}.sidebar,.mainpanel,.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.sidebar{padding:16px;align-self:start;position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}.side-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:7px 9px 10px}.navbtn{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:10px 11px;color:var(--ink);margin:2px 0}.navbtn:hover,.navbtn.active{background:var(--soft);color:#3929a8}.navbtn small{display:block;color:var(--muted);font-size:12px}.navbtn.active{font-weight:750}.mainpanel{padding:clamp(18px,3vw,32px);min-height:560px}.eyebrow{color:var(--brand);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.1em}.mainpanel h2{font-size:30px;line-height:1.2;margin:5px 0 12px}.mainpanel h3{margin-top:24px}.muted{color:var(--muted)}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.chip{border-radius:999px;background:#f0f2f8;border:1px solid var(--line);padding:5px 10px;font-size:12px;font-weight:700}.callout{background:#f5f3ff;border-left:4px solid var(--brand);padding:13px 15px;border-radius:9px;margin:17px 0}.lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lesson-card{border:1px solid var(--line);border-radius:13px;padding:16px}.lesson-card h3{margin:0 0 8px;font-size:16px}.lesson-card p{margin:0;color:var(--muted);font-size:14px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 15px;background:white;color:var(--ink);font-weight:750}.btn.primary{background:var(--brand);border-color:var(--brand);color:white}.btn.primary:hover{background:#4532b7}.btn:disabled{opacity:.45;cursor:not-allowed}.progressbar{height:8px;background:#e7eaf2;border-radius:999px;overflow:hidden;margin:10px 0}.progressbar span{display:block;height:100%;background:var(--brand);width:0;transition:width .2s}.qtop{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:13px}.qtext{font-size:20px;font-weight:750;margin:18px 0}.options{display:grid;gap:10px}.option{display:flex;gap:11px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:white;text-align:left;width:100%;color:var(--ink)}.option:hover{border-color:#a69cf3}.option.selected{border-color:var(--brand);background:#f5f3ff}.option.correct{border-color:#2d9b68;background:#edfbf3}.option.incorrect{border-color:#d92d20;background:#fff1f0}.option .letter{font-weight:800;color:var(--muted);min-width:22px}.feedback{margin-top:15px;padding:14px;border-radius:12px;background:#f4f6fa}.feedback.good{background:#edfbf3;color:#145c3a}.feedback.bad{background:#fff1f0;color:#8f1e16}.result-score{font-size:48px;font-weight:850;line-height:1.1}.review-item{border:1px solid var(--line);padding:14px;border-radius:12px;margin:10px 0}.review-item h4{margin:0 0 6px}.domainrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:10px 0}.footer{padding:30px 10px;color:var(--muted);font-size:13px}.hidden{display:none!important}.tag{display:inline-block;padding:4px 8px;background:#e8f8ef;color:#146c43;border-radius:6px;font-size:12px;font-weight:800}.search{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px}.tiny{font-size:12px;color:var(--muted)}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.stats{grid-template-columns:repeat(2,1fr)}.lesson-grid{grid-template-columns:1fr}.mainpanel{min-height:0}.top{padding:18px}.top small{display:none}}
+</style>
 </head>
 <body>
-
-    <aside id="sidebar">
-        <div class="sidebar-header">
-            <h1>AWS AI Practitioner</h1>
-            <p>AIF-C01 Official Exam Prep App</p>
-        </div>
-
-        <div class="nav-section-title">Course Modules (10)</div>
-        <ul class="nav-list" id="module-nav"></ul>
-
-        <div class="nav-section-title">Full Practice Exams (3)</div>
-        <ul class="nav-list" id="exam-nav"></ul>
-    </aside>
-
-    <main id="main-content">
-        <header class="top-bar">
-            <h2 id="view-title">Module 1: AI & ML Fundamentals</h2>
-            <div class="top-actions">
-                <div id="exam-timer" class="timer-display" style="display: none;">90:00</div>
-                <button id="toggle-quiz-btn" class="btn btn-primary" onclick="toggleMode()">Take Module Quiz</button>
-            </div>
-        </header>
-
-        <div class="content-scroll">
-            <div class="container">
-                <div id="notes-view"></div>
-
-                <div id="quiz-view" class="quiz-container">
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" id="quiz-mode-btn" onclick="setQuizTab('questions')">Questions</button>
-                        <button class="tab-btn" id="results-tab-btn" onclick="setQuizTab('results')" style="display: none;">Score & Breakdown</button>
-                    </div>
-
-                    <div id="quiz-questions-container"></div>
-                    <div id="quiz-results-container" style="display: none;"></div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        // --- COMPLETE 10 MODULES & 3 EXAMS DATA STRUCTURE ---
-        const courseData = {
-            modules: [
-                {
-                    id: 1,
-                    title: "Module 1: Fundamentals of AI and ML",
-                    notes: `
-                        <div class="card">
-                            <h3>1. Basic AI Concepts & Core Terminology</h3>
-                            <p>Artificial Intelligence (AI) encompasses computer systems that emulate human cognitive functions. Machine Learning (ML) is a subset of AI where systems learn from historical data using statistical algorithms. Deep Learning (DL) is a specialized branch of ML utilizing multi-layered artificial neural networks (ANNs) for processing unstructured data like text, images, and audio.</p>
-                        </div>
-                        <div class="card">
-                            <h3>2. Practical Business Use Cases</h3>
-                            <ul>
-                                <li><strong>Fraud Detection:</strong> Using supervised classification models to flag unauthorized financial transactions in real time.</li>
-                                <li><strong>Predictive Maintenance:</strong> Time-series regression analysis predicting industrial equipment failures before downtime occurs.</li>
-                                <li><strong>Personalization Engines:</strong> Recommendation systems using collaborative filtering and clustering to suggest relevant products.</li>
-                            </ul>
-                        </div>
-                        <div class="card">
-                            <h3>3. Complete ML Development Lifecycle</h3>
-                            <div class="highlight-box">
-                                <strong>Lifecycle Sequence:</strong> Business Goal Definition $\rightarrow$ Data Ingestion & Cleaning $\rightarrow$ Feature Engineering $\rightarrow$ Model Training $\rightarrow$ Evaluation & Tuning $\rightarrow$ Deployment & Inference $\rightarrow$ Drift Monitoring.
-                            </div>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "A company wants to predict whether a credit card transaction is fraudulent based on historical labeled data. What ML approach should be used?", options: ["Unsupervised Clustering", "Supervised Classification", "Supervised Regression", "Reinforcement Learning"], answer: 1, explanation: "Predicting categorical outcomes (Fraud vs Legitimate) using pre-labeled historical data requires Supervised Classification." },
-                        { q: "Which phase of the ML lifecycle transforms raw variables into numeric embeddings suitable for neural networks?", options: ["Model Monitoring", "Feature Engineering", "Ground Truth Collection", "Hyperparameter Tuning"], answer: 1, explanation: "Feature Engineering transforms raw tabular or unstructured data into optimal mathematical features." }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "Module 2: Fundamentals of GenAI",
-                    notes: `
-                        <div class="card">
-                            <h3>1. GenAI vs. Traditional ML</h3>
-                            <p>Traditional ML analyzes existing data to classify records or predict quantitative targets. Generative AI (GenAI) leverages Foundation Models (FMs) and Transformer architectures to generate entirely original content (text, synthetic code, images, audio) based on learned probabilistic distributions.</p>
-                        </div>
-                        <div class="card">
-                            <h3>2. Transformers & Attention Mechanisms</h3>
-                            <p>The Transformer architecture uses Self-Attention mechanisms to process sequence tokens concurrently rather than sequentially, enabling scalable parallel training on massive unstructured text corpora.</p>
-                        </div>
-                        <div class="card">
-                            <h3>3. Capabilities, Limitations & Parameters</h3>
-                            <ul>
-                                <li><strong>Hallucinations:</strong> Unintended, ungrounded, or factually incorrect statements generated with high confidence.</li>
-                                <li><strong>Knowledge Cutoff:</strong> The date threshold when model pre-training concluded.</li>
-                                <li><strong>Temperature:</strong> Inference parameter controlling randomness ($0.0 = $ deterministic, $1.0 = $ creative).</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "What is the primary function of Self-Attention in Transformer models?", options: ["Encrypt training data at rest", "Process tokens in parallel while calculating contextual relationships", "Reduce GPU memory cost to zero", "Perform supervised binary classification"], answer: 1, explanation: "Self-Attention enables Transformers to analyze tokens concurrently while capturing semantic context across long sequences." },
-                        { q: "Setting Temperature to 0.0 during LLM inference leads to what behavior?", options: ["Unpredictable responses", "Deterministic and factual outputs selecting top probable tokens", "System execution error", "Increased latency"], answer: 1, explanation: "Temperature 0.0 removes randomness, forcing the model to pick top-ranked probability tokens every time." }
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "Module 3: Applications of Foundation Models",
-                    notes: `
-                        <div class="card">
-                            <h3>1. Prompt Engineering Techniques</h3>
-                            <ul>
-                                <li><strong>Zero-Shot Prompting:</strong> Requesting a task without providing any example pairs in the prompt.</li>
-                                <li><strong>Few-Shot Prompting:</strong> Providing 1 to 5 input-output demonstration pairs within the prompt to guide output format and reasoning.</li>
-                                <li><strong>Chain-of-Thought (CoT):</strong> Explicitly instructing the model to break down complex multi-step logical reasoning line by line.</li>
-                            </ul>
-                        </div>
-                        <div class="card">
-                            <h3>2. FM Customization: Pre-training vs. Fine-Tuning vs. RAG</h3>
-                            <ul>
-                                <li><strong>Retrieval-Augmented Generation (RAG):</strong> Connecting FMs to external vector databases (e.g., OpenSearch, Kendra) to retrieve private enterprise data at inference time without changing model weights.</li>
-                                <li><strong>Fine-Tuning:</strong> Updating pre-trained model weights with a domain-specific dataset to adapt style or domain task performance.</li>
-                                <li><strong>Continuous Pre-training:</strong> Unsupervised training on massive domain raw text using domain corpora.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which prompt technique provides several input-output example pairs inside the prompt to dictate output formatting?", options: ["Zero-Shot Prompting", "Few-Shot Prompting", "Continuous Pre-training", "Temperature Scaling"], answer: 1, explanation: "Few-Shot prompting supplies example demonstrations directly within the context window." },
-                        { q: "A bank wants an LLM to query updated private internal customer policies without retraining model weights. Which architecture is best?", options: ["Full Model Pre-training", "Retrieval-Augmented Generation (RAG)", "Hyperparameter Tuning", "Supervised Fine-Tuning"], answer: 1, explanation: "RAG connects foundation models to external knowledge sources dynamically without altering model parameters." }
-                    ]
-                },
-                {
-                    id: 4,
-                    title: "Module 4: Guidelines for Responsible AI",
-                    notes: `
-                        <div class="card">
-                            <h3>1. Responsible AI Principles</h3>
-                            <p>Developing trustworthy systems requires addressing key pillars: Fairness, Safety, Privacy, Security, Transparency, Explainability, and Governance.</p>
-                        </div>
-                        <div class="card">
-                            <h3>2. Explainability & Bias Mitigation</h3>
-                            <ul>
-                                <li><strong>Amazon SageMaker Clarify:</strong> Detects potential bias during data preparation, model training, and monitors deployed models for feature attribution explainability (using SHAP values).</li>
-                                <li><strong>Model Cards:</strong> Standardized documentation summarizing model intended use, training parameters, evaluation metrics, and limitations.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which AWS tool detects pre-training and post-training data bias and generates model explainability reports?", options: ["Amazon Macie", "Amazon SageMaker Clarify", "AWS Artifact", "Amazon Rekognition"], answer: 1, explanation: "SageMaker Clarify provides deep visibility into data bias and calculates feature attributions for model explainability." },
-                        { q: "What is the primary purpose of an AI Model Card?", options: ["Store IAM permission policies", "Provide standardized documentation regarding model capabilities, limitations, and evaluation metrics", "Encrypt S3 storage buckets containing datasets", "Manage billing limits"], answer: 1, explanation: "Model Cards provide transparent documentation on model design, training attributes, and operational bounds." }
-                    ]
-                },
-                {
-                    id: 5,
-                    title: "Module 5: Security, Compliance, and Governance",
-                    notes: `
-                        <div class="card">
-                            <h3>1. Securing AI Systems & Guardrails</h3>
-                            <ul>
-                                <li><strong>Amazon Bedrock Guardrails:</strong> Configures customized safety filters to block harmful content, filter PII, prevent prompt injections, and enforce topic policy bounds across FMs.</li>
-                                <li><strong>AWS KMS:</strong> Encodes training data, vector databases, and model endpoints using customer-managed encryption keys.</li>
-                            </ul>
-                        </div>
-                        <div class="card">
-                            <h3>2. Compliance & Auditability</h3>
-                            <ul>
-                                <li><strong>AWS Artifact:</strong> Provides on-demand access to AWS security and compliance reports (SOC, ISO, PCI).</li>
-                                <li><strong>AWS CloudTrail:</strong> Audits and logs all API calls made across AWS AI services for compliance verification.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which Amazon Bedrock feature allows organizations to set up strict content filters, redact PII, and block toxic content across all foundation models?", options: ["Amazon Bedrock Guardrails", "AWS WAF Bot Control", "SageMaker Model Monitor", "AWS IAM Roles"], answer: 0, explanation: "Amazon Bedrock Guardrails implements customizable safety boundaries and PII redaction across FMs." },
-                        { q: "Which service audits API calls and management actions across AWS AI resources for compliance logging?", options: ["AWS CloudTrail", "AWS Budgets", "Amazon QuickSight", "Amazon CloudSearch"], answer: 0, explanation: "AWS CloudTrail records user activity and API calls across AWS infrastructure for auditing." }
-                    ]
-                },
-                {
-                    id: 6,
-                    title: "Module 6: Core AWS AI/ML Services Overview",
-                    notes: `
-                        <div class="card">
-                            <h3>1. In-Scope Managed AI Services</h3>
-                            <ul>
-                                <li><strong>Amazon Bedrock:</strong> Fully managed serverless API service for accessing leading foundation models.</li>
-                                <li><strong>Amazon SageMaker Canvas:</strong> No-code visual interface for building, training, and deploying ML models.</li>
-                                <li><strong>Amazon Q Developer:</strong> Generative AI assistant for writing, debugging, and explaining code.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which no-code visual interface enables business analysts to generate accurate ML predictions without writing code?", options: ["Amazon SageMaker Canvas", "AWS Cloud9", "Amazon OpenSearch", "AWS Batch"], answer: 0, explanation: "SageMaker Canvas provides a point-and-click visual workflow for building predictive ML models." }
-                    ]
-                },
-                {
-                    id: 7,
-                    title: "Module 7: Specialized AWS Vision & Speech Services",
-                    notes: `
-                        <div class="card">
-                            <h3>Computer Vision & Speech API Suite</h3>
-                            <ul>
-                                <li><strong>Amazon Rekognition:</strong> Computer vision service for automated image/video analysis, face detection, and content moderation.</li>
-                                <li><strong>Amazon Textract:</strong> Extracts text, handwriting, tables, and form fields automatically from scanned documents.</li>
-                                <li><strong>Amazon Transcribe:</strong> Speech-to-text conversion tool for audio files.</li>
-                                <li><strong>Amazon Polly:</strong> Text-to-speech service using advanced deep learning neural voices.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which service extracts structured form tables and handwritten text from scanned PDF documents?", options: ["Amazon Textract", "Amazon Comprehend", "Amazon Rekognition", "Amazon Polly"], answer: 0, explanation: "Amazon Textract goes beyond OCR to extract structured data, form tables, and handwriting." }
-                    ]
-                },
-                {
-                    id: 8,
-                    title: "Module 8: Text Analytics, Search & Language Services",
-                    notes: `
-                        <div class="card">
-                            <h3>NLP, Translation & Intelligent Search</h3>
-                            <ul>
-                                <li><strong>Amazon Comprehend:</strong> Natural Language Processing (NLP) service that extracts entities, key phrases, language, and sentiment from unstructured text.</li>
-                                <li><strong>Amazon Kendra:</strong> Highly accurate enterprise intelligent search service powered by machine learning to query unstructured repositories.</li>
-                                <li><strong>Amazon Translate:</strong> Fast, neural machine translation service.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "An enterprise needs an intelligent search engine that understands natural language queries across SharePoint and S3. Which service fits?", options: ["Amazon Kendra", "Amazon CloudSearch", "Amazon Polly", "AWS CodeCommit"], answer: 0, explanation: "Amazon Kendra is a ML-powered enterprise search service that indexes unstructured data across multiple connectors." }
-                    ]
-                },
-                {
-                    id: 9,
-                    title: "Module 9: Personalization & Forecasting Services",
-                    notes: `
-                        <div class="card">
-                            <h3>Business Optimization Services</h3>
-                            <ul>
-                                <li><strong>Amazon Personalize:</strong> Real-time personalization and recommendation engine based on the technology used by Amazon.com.</li>
-                                <li><strong>Amazon Forecast:</strong> Time-series forecasting service utilizing machine learning for financial and inventory predictions.</li>
-                                <li><strong>Amazon Fraud Detector:</strong> Fully managed service for identifying fraudulent online activities.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Which service generates real-time product recommendations tailored to individual customer browsing histories?", options: ["Amazon Personalize", "Amazon Forecast", "Amazon Lex", "Amazon Bedrock"], answer: 0, explanation: "Amazon Personalize delivers real-time curated recommendations using custom machine learning algorithms." }
-                    ]
-                },
-                {
-                    id: 10,
-                    title: "Module 10: Infrastructure, Data Integration & Cloud Architecture",
-                    notes: `
-                        <div class="card">
-                            <h3>Compute, Storage & Financial Management</h3>
-                            <ul>
-                                <li><strong>Compute:</strong> AWS Lambda (serverless inference), Amazon EC2 (GPU instances like P4/G5), AWS Fargate.</li>
-                                <li><strong>Data Storage:</strong> Amazon S3 (object storage for datasets), Amazon Aurora / DynamoDB.</li>
-                                <li><strong>Cost Management:</strong> AWS Budgets and AWS Cost Explorer for monitoring AI workload spend.</li>
-                            </ul>
-                        </div>
-                    `,
-                    questions: [
-                        { q: "Where should an organization store multi-petabyte unstructured image datasets for training SageMaker models?", options: ["Amazon S3", "Amazon MemoryDB for Redis", "AWS CodeArtifact", "Amazon Route 53"], answer: 0, explanation: "Amazon S3 offers scalable, durable object storage optimized for massive ML datasets." }
-                    ]
-                }
-            ],
-            exams: [
-                {
-                    id: 1,
-                    title: "Practice Exam 1 (40 Questions)",
-                    questions: [
-                        { q: "A developer needs to build an AI application that generates code snippets inside the IDE. Which service should be chosen?", options: ["Amazon Q Developer", "Amazon Kendra", "Amazon Comprehend", "AWS Batch"], answer: 0, explanation: "Amazon Q Developer assists engineers with real-time code generation, debugging, and explanation inside modern IDEs." },
-                        { q: "Which tool allows business users to generate predictions from tabular data using a visual drag-and-drop workflow?", options: ["Amazon SageMaker Canvas", "Amazon EC2", "AWS CodePipeline", "Amazon Lex"], answer: 0, explanation: "SageMaker Canvas enables non-coders to create predictive ML models visually." }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "Practice Exam 2 (40 Questions)",
-                    questions: [
-                        { q: "What is the primary benefit of deploying RAG instead of Fine-Tuning a Foundation Model?", options: ["RAG reduces inference latency to zero", "RAG avoids altering model weights and retrieves up-to-date factual data", "RAG converts unstructured data into SQL databases", "RAG eliminates the need for AWS IAM permissions"], answer: 1, explanation: "RAG connects models to external data sources dynamically without costly weight updates." }
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "Practice Exam 3 (40 Questions)",
-                    questions: [
-                        { q: "An company requires an enterprise API to enforce guardrails that filter out adult content and PII from LLM outputs. Which service provides this?", options: ["Amazon Bedrock Guardrails", "Amazon Rekognition", "AWS Artifact", "AWS Shield"], answer: 0, explanation: "Bedrock Guardrails evaluates and redacts unsafe content and sensitive data across models." }
-                    ]
-                }
-            ]
-        };
-
-        // --- APPLICATION LOGIC ENGINE ---
-        let state = {
-            currentModuleId: 1,
-            isExamMode: false,
-            activeTab: 'notes',
-            answers: {},
-            timerInterval: null,
-            timeLeft: 5400
-        };
-
-        function initApp() {
-            renderNav();
-            loadModule(1);
-        }
-
-        function renderNav() {
-            const moduleList = document.getElementById('module-nav');
-            moduleList.innerHTML = courseData.modules.map(m => `
-                <li class="nav-item ${m.id === state.currentModuleId && !state.isExamMode ? 'active' : ''}" onclick="selectModule(${m.id})">
-                    <span>${m.title.split(':')[0]}</span>
-                    <span class="badge">${m.questions.length} Qs</span>
-                </li>
-            `).join('');
-
-            const examList = document.getElementById('exam-nav');
-            examList.innerHTML = courseData.exams.map(e => `
-                <li class="nav-item ${e.id === state.currentModuleId && state.isExamMode ? 'active' : ''}" onclick="selectExam(${e.id})">
-                    <span>${e.title}</span>
-                    <span class="badge">Exam</span>
-                </li>
-            `).join('');
-        }
-
-        function selectModule(id) {
-            state.currentModuleId = id;
-            state.isExamMode = false;
-            state.answers = {};
-            renderNav();
-            loadModule(id);
-        }
-
-        function selectExam(id) {
-            state.currentModuleId = id;
-            state.isExamMode = true;
-            state.answers = {};
-            renderNav();
-            loadExam(id);
-        }
-
-        function loadModule(id) {
-            const module = courseData.modules.find(m => m.id === id);
-            document.getElementById('view-title').innerText = module.title;
-            document.getElementById('notes-view').style.display = 'block';
-            document.getElementById('quiz-view').style.display = 'none';
-            document.getElementById('toggle-quiz-btn').innerText = 'Take Module Quiz';
-            document.getElementById('toggle-quiz-btn').style.display = 'block';
-            document.getElementById('exam-timer').style.display = 'none';
-
-            document.getElementById('notes-view').innerHTML = module.notes;
-            renderQuizQuestions(module.questions);
-        }
-
-        function loadExam(id) {
-            const exam = courseData.exams.find(e => e.id === id);
-            document.getElementById('view-title').innerText = exam.title;
-            document.getElementById('notes-view').style.display = 'none';
-            document.getElementById('quiz-view').style.display = 'block';
-            document.getElementById('quiz-view').classList.add('active');
-            document.getElementById('toggle-quiz-btn').style.display = 'none';
-            document.getElementById('exam-timer').style.display = 'block';
-
-            renderQuizQuestions(exam.questions);
-            startTimer();
-        }
-
-        function toggleMode() {
-            const notesView = document.getElementById('notes-view');
-            const quizView = document.getElementById('quiz-view');
-            const btn = document.getElementById('toggle-quiz-btn');
-
-            if (quizView.style.display === 'none' || !quizView.style.display) {
-                notesView.style.display = 'none';
-                quizView.style.display = 'block';
-                quizView.classList.add('active');
-                btn.innerText = 'Back to Notes';
-            } else {
-                notesView.style.display = 'block';
-                quizView.style.display = 'none';
-                quizView.classList.remove('active');
-                btn.innerText = 'Take Module Quiz';
-            }
-        }
-
-        function renderQuizQuestions(questions) {
-            const container = document.getElementById('quiz-questions-container');
-            container.innerHTML = questions.map((q, qIndex) => `
-                <div class="question-card" id="q-card-${qIndex}">
-                    <div class="question-header">
-                        <span>Question ${qIndex + 1} of ${questions.length}</span>
-                    </div>
-                    <div class="question-text">${q.q}</div>
-                    <div class="options-list">
-                        ${q.options.map((opt, oIndex) => `
-                            <div class="option-item" id="opt-${qIndex}-${oIndex}" onclick="selectOption(${qIndex},${oIndex})">
-                                <strong>${String.fromCharCode(65 + oIndex)}.</strong>${opt}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="explanation" id="exp-${qIndex}" style="display: none;">
-                        <strong>AWS Exam Explanation:</strong>
-                        ${q.explanation}
-                    </div>
-                </div>
-            `).join('') + `
-                <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; margin-top: 20px;" onclick="submitQuiz()">Submit Answers</button>
-            `;
-        }
-
-        function selectOption(qIndex, oIndex) {
-            state.answers[qIndex] = oIndex;
-            const parent = document.getElementById(`q-card-${qIndex}`);
-            const options = parent.querySelectorAll('.option-item');
-            options.forEach((opt, idx) => {
-                if (idx === oIndex) opt.classList.add('selected');
-                else opt.classList.remove('selected');
-            });
-        }
-
-        function submitQuiz() {
-            const questions = state.isExamMode 
-                ? courseData.exams.find(e => e.id === state.currentModuleId).questions 
-                : courseData.modules.find(m => m.id === state.currentModuleId).questions;
-
-            let score = 0;
-            questions.forEach((q, qIndex) => {
-                const selected = state.answers[qIndex];
-                const exp = document.getElementById(`exp-${qIndex}`);
-                if (exp) exp.style.display = 'block';
-
-                q.options.forEach((_, oIndex) => {
-                    const optEl = document.getElementById(`opt-${qIndex}-${oIndex}`);
-                    if (!optEl) return;
-
-                    if (oIndex === q.answer) optEl.classList.add('correct');
-                    if (selected === oIndex && selected !== q.answer) optEl.classList.add('incorrect');
-                });
-
-                if (selected === q.answer) score++;
-            });
-
-            document.getElementById('results-tab-btn').style.display = 'inline-block';
-            setQuizTab('results');
-            renderResults(score, questions.length);
-        }
-
-        function renderResults(score, total) {
-            const percentage = Math.round((score / total) * 100);
-            const passed = percentage >= 75;
-            const resultsContainer = document.getElementById('quiz-results-container');
-            resultsContainer.innerHTML = `
-                <div class="card results-card">
-                    <h3>${passed ? 'PASSED! 🎉' : 'KEEP STUDYING! 📚'}</h3>
-                    <div class="score-circle" style="border-color: ${passed ? 'var(--success)' : 'var(--error)'}; color: ${passed ? 'var(--success)' : 'var(--error)'}">
-                        ${percentage}%
-                    </div>
-                    <p>You answered <strong>${score}</strong> out of <strong>${total}</strong> questions correctly.</p>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">AWS Official Passing Threshold: 75%</p>
-                    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="setQuizTab('questions')">Review Detailed Answers</button>
-                </div>
-            `;
-        }
-
-        function setQuizTab(tab) {
-            state.activeTab = tab;
-            const qBtn = document.getElementById('quiz-mode-btn');
-            const rBtn = document.getElementById('results-tab-btn');
-            const qContainer = document.getElementById('quiz-questions-container');
-            const rContainer = document.getElementById('quiz-results-container');
-
-            if (tab === 'questions') {
-                qBtn.classList.add('active');
-                rBtn.classList.remove('active');
-                qContainer.style.display = 'block';
-                rContainer.style.display = 'none';
-            } else {
-                rBtn.classList.add('active');
-                qBtn.classList.remove('active');
-                qContainer.style.display = 'none';
-                rContainer.style.display = 'block';
-            }
-        }
-
-        function startTimer() {
-            clearInterval(state.timerInterval);
-            state.timeLeft = 5400;
-            state.timerInterval = setInterval(() => {
-                state.timeLeft--;
-                const mins = Math.floor(state.timeLeft / 60);
-                const secs = state.timeLeft % 60;
-                document.getElementById('exam-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                if (state.timeLeft <= 0) {
-                    clearInterval(state.timerInterval);
-                    submitQuiz();
-                }
-            }, 1000);
-        }
-
-        window.onload = initApp;
-    </script>
+<header class="top"><div><div class="brand">AWS AI PRACTITIONER · STUDY LAB</div><small>AIF-C01 • Independent exam preparation</small></div><small>English-language learning app</small></header>
+<div class="wrap">
+<section class="hero">
+<h1>Learn the concepts.<br>Practice the decisions.</h1>
+<p>A guided study companion for the AWS Certified AI Practitioner (AIF-C01). Study ten focused sections, test your understanding, and use three mixed-topic practice exams to identify gaps before exam day.</p>
+<div class="stats">
+<div class="stat"><b>10</b><span>Study sections</span></div><div class="stat"><b>20</b><span>Questions per quiz</span></div><div class="stat"><b>3 × 40</b><span>Final practice exams</span></div><div class="stat"><b>70%</b><span>Practice target*</span></div>
+</div>
+</section>
+<div class="layout">
+<aside class="sidebar">
+<div class="side-title">Study path</div>
+<button class="navbtn active" data-view="home">🏠 Dashboard <small>Overview and progress</small></button>
+<div class="side-title">Learning sections</div>
+<div id="moduleNav"></div>
+<div class="side-title">Final practice</div>
+<button class="navbtn" data-view="exam" data-exam="1">Final Exam 1 <small>40 mixed questions</small></button>
+<button class="navbtn" data-view="exam" data-exam="2">Final Exam 2 <small>40 mixed questions</small></button>
+<button class="navbtn" data-view="exam" data-exam="3">Final Exam 3 <small>40 mixed questions</small></button>
+<button class="navbtn" data-view="resources">Official resources <small>Exam guide and next steps</small></button>
+</aside>
+<main class="mainpanel" id="main"></main>
+</div>
+<div class="footer">Independent study project. AWS and its certification marks are trademarks of Amazon.com, Inc. or its affiliates. This application is not affiliated with, endorsed by, or sponsored by AWS. Questions are original practice questions, not actual or recalled certification exam questions.</div>
+</div>
+<script>
+const domains=[
+{n:"Domain 1",name:"Fundamentals of AI and ML",weight:"20%"},
+{n:"Domain 2",name:"Fundamentals of Generative AI",weight:"24%"},
+{n:"Domain 3",name:"Applications of Foundation Models",weight:"28%"},
+{n:"Domain 4",name:"Guidelines for Responsible AI",weight:"14%"},
+{n:"Domain 5",name:"Security, Compliance, and Governance",weight:"14%"}
+];
+const modules=[
+{title:"AI, ML & the Model Lifecycle",domain:0,tags:["AI vs. ML","Learning types","Lifecycle"],intro:"Build a reliable vocabulary for artificial intelligence and understand how ML systems move from a business problem to production.",lessons:[
+["AI, ML and deep learning","Artificial intelligence is the broad field of systems performing tasks associated with intelligence. Machine learning (ML) learns patterns from data. Deep learning uses multi-layer neural networks. Generative AI creates new content; it is one family of AI capabilities, not a synonym for all AI."],
+["Learning approaches","Supervised learning uses labeled examples for tasks such as classification and regression. Unsupervised learning discovers structure in unlabeled data, such as clusters. Reinforcement learning learns behavior through actions, rewards, and feedback."],
+["Data and lifecycle","Data may be structured or unstructured, labeled or unlabeled, and may include text, images, audio, tabular records, or time series. A typical lifecycle includes defining the business problem, collecting and preparing data, training, evaluating, deploying, monitoring, and iterating."],
+["Inference and evaluation","Inference is model use after training. Batch inference processes many records together; real-time inference responds quickly to requests; asynchronous inference handles requests that may take longer. Choose metrics that reflect the business problem, not only model accuracy."]
+],services:"Amazon SageMaker AI, SageMaker Data Wrangler, SageMaker Ground Truth, SageMaker Model Monitor, Amazon S3, Amazon CloudWatch"},
+{title:"AI Use Cases & AWS AI Services",domain:0,tags:["Business value","Service selection","ML tasks"],intro:"Map business needs to the appropriate AI task and AWS managed service. The exam emphasizes selecting the right capability, not implementing algorithms.",lessons:[
+["Common ML problems","Classification predicts a category, such as fraud/not fraud. Regression predicts a numeric value, such as demand. Clustering groups similar records without predefined labels. Forecasting predicts future values over time. Recommendation systems rank likely relevant items."],
+["Choose a purpose-built service","Amazon Rekognition analyzes images and video; Textract extracts text and structured data from documents; Transcribe converts speech to text; Polly converts text to speech; Translate translates languages; Comprehend extracts language insights; Lex supports conversational interfaces."],
+["Search and knowledge","Amazon Kendra provides intelligent enterprise search. Amazon OpenSearch Service supports search and analytics. Amazon Personalize builds personalized recommendations. Amazon Fraud Detector detects potentially fraudulent activity in supported workflows; Amazon Forecast is a forecasting service listed in the supplied study scope."],
+["Business-first thinking","Start with the desired outcome, data availability, risk, latency, cost, and need for customization. Prefer a managed AI service when it meets requirements; use a broader ML platform when you need more control over the model lifecycle."]
+],services:"Amazon Rekognition, Textract, Transcribe, Polly, Translate, Comprehend, Lex, Kendra, Personalize, SageMaker AI"},
+{title:"Generative AI Fundamentals",domain:1,tags:["GenAI","Tokens","Embeddings","Multimodal"],intro:"Understand how generative AI differs from predictive ML, what common terms mean, and where its capabilities and limitations fit business needs.",lessons:[
+["Foundation models and LLMs","A foundation model (FM) is trained on broad data and can be adapted to many downstream tasks. A large language model (LLM) specializes in language-related tasks. Models may also accept or generate images, audio, video, or other modalities."],
+["Tokens, vectors and embeddings","Tokens are units of model input or output and affect context capacity and cost. Embeddings are numerical representations of semantic meaning. Vector search retrieves items by similarity. Chunking splits long content into smaller passages that fit retrieval and context constraints."],
+["Generative capabilities and limits","GenAI can draft, summarize, translate, answer questions, generate code, and create media. It can hallucinate, reflect training-data bias, expose sensitive data if poorly designed, and produce inconsistent output. Human review is important for high-impact decisions."],
+["Model families","Transformer architectures underpin many modern LLMs. Diffusion models commonly generate images by learning to reverse a noise process. Multimodal models work across more than one data modality. Agentic systems can plan or take actions using tools, within defined permissions and guardrails."]
+],services:"Amazon Bedrock, Amazon SageMaker JumpStart, Amazon Polly, Amazon Transcribe, Amazon Translate"},
+{title:"Amazon Bedrock & AWS GenAI Infrastructure",domain:1,tags:["Bedrock","Model choice","Architecture"],intro:"Learn the role of Amazon Bedrock and the surrounding AWS services commonly used to build secure, scalable generative AI applications.",lessons:[
+["Amazon Bedrock","Amazon Bedrock provides access to supported foundation models through managed APIs and features for building GenAI applications. It can reduce the need to manage model-serving infrastructure directly. Model availability and features vary by Region and model."],
+["Choosing a model","Compare quality, supported modalities, latency, context window, throughput, cost, language support, customization options, and data handling requirements. Test representative prompts and evaluation datasets before choosing."],
+["Application building blocks","Amazon S3 can store documents; AWS Lambda can run application logic; Amazon API Gateway can expose APIs; IAM controls access; AWS KMS supports encryption-key management; CloudWatch supports monitoring. Choose services based on requirements rather than using every service."],
+["Retrieval-augmented generation","RAG retrieves relevant external content and supplies it to a model at inference time. It can improve grounding and freshness without retraining the FM. Retrieval quality, permissions, chunking, and source quality still matter; RAG does not guarantee correctness."]
+],services:"Amazon Bedrock, Amazon S3, AWS Lambda, Amazon API Gateway, AWS IAM, AWS KMS, Amazon CloudWatch, Amazon OpenSearch Service"},
+{title:"Prompt Engineering & FM Design",domain:2,tags:["Prompt patterns","Context","Guardrails"],intro:"Improve model outputs by specifying the task, context, constraints, examples, and desired response format. Prompting is not the same as retraining a model.",lessons:[
+["Prompt structure","A strong prompt clearly states the task, provides relevant context, defines constraints, and describes the expected format. Break complex requests into manageable steps and avoid ambiguous instructions."],
+["Zero-shot and few-shot","Zero-shot prompting gives instructions without examples. Few-shot prompting includes examples of the desired input-output pattern. Context setting provides background, role, audience, and constraints that help the model respond appropriately."],
+["Grounding and output controls","Provide trusted source material when factual grounding matters. Request structured formats such as JSON when appropriate, then validate the result in application code. A prompt alone is not a security boundary."],
+["Guardrails and iteration","Use guardrails and input/output checks to reduce unsafe or off-policy responses. Test adversarial and edge-case prompts, compare outputs systematically, and keep a human review path for consequential uses."]
+],services:"Amazon Bedrock Guardrails, Amazon Bedrock, Amazon CloudWatch"},
+{title:"Training, Fine-Tuning & Evaluation",domain:2,tags:["Pre-training","Fine-tuning","Metrics"],intro:"Distinguish model training approaches and learn how to evaluate output quality using task-appropriate metrics and human judgment.",lessons:[
+["Training versus inference","Training adjusts model parameters using data. Inference uses a trained model to produce a prediction or response. Pre-training learns broad patterns from large datasets; continuous pre-training extends training with additional domain data."],
+["Fine-tuning and customization","Fine-tuning adapts a pre-trained model using curated examples for a specific task or style. It is different from prompt engineering, which changes the input instructions, and RAG, which supplies retrieved knowledge at inference time."],
+["Evaluation methods","Use representative test data, automated metrics, human evaluation, and business acceptance criteria. Classification can use precision, recall, F1, and accuracy; generative tasks may require factuality, relevance, groundedness, toxicity, helpfulness, and human review."],
+["Avoid misleading results","Prevent data leakage between training and evaluation sets. Check whether test data represents real-world users and edge cases. Monitor performance after deployment because data, user behavior, and model behavior can change."]
+],services:"Amazon SageMaker AI, SageMaker Clarify, SageMaker Model Monitor, Amazon Bedrock, Amazon CloudWatch"},
+{title:"Responsible AI, Bias & Explainability",domain:3,tags:["Fairness","Transparency","Safety"],intro:"Responsible AI considers the effects of a system across its lifecycle, including fairness, robustness, privacy, transparency, and human oversight.",lessons:[
+["Bias and fairness","Bias can enter through historical data, sampling, labels, measurement, or system design. Evaluate outcomes across relevant groups, inspect data quality, and involve affected stakeholders. A single aggregate accuracy score can hide unequal error rates."],
+["Explainability and transparency","Explainability helps people understand factors behind a model output. Transparency includes communicating system capabilities, limitations, intended use, and known risks. Explanations should be appropriate to the audience and decision."],
+["Safety and human oversight","Apply risk-based safeguards, test misuse scenarios, set escalation paths, and keep qualified human review for high-impact decisions. Monitor incidents and provide a way to challenge or correct consequential outputs."],
+["AWS support","Amazon SageMaker Clarify helps assess bias and explain model predictions. Amazon Bedrock Guardrails can help apply configured safety policies to supported GenAI interactions. These tools support, but do not replace, organizational responsibility."]
+],services:"Amazon SageMaker Clarify, Amazon Bedrock Guardrails, Amazon CloudWatch"},
+{title:"Security, Privacy & Data Protection",domain:4,tags:["IAM","Encryption","Prompt injection"],intro:"Protect prompts, training data, model endpoints, and outputs through least privilege, encryption, logging, and layered defenses.",lessons:[
+["Identity and least privilege","AWS IAM controls who can access AWS resources and which actions they can perform. Grant only required permissions, use roles where appropriate, and review permissions as systems change."],
+["Encryption and data protection","AWS KMS manages encryption keys for supported integrations. Use encryption in transit and at rest, data minimization, appropriate retention, and access controls. Amazon Macie can help discover sensitive data in Amazon S3."],
+["Threats to GenAI systems","Prompt injection attempts to manipulate model instructions through user input or retrieved content. Other risks include sensitive-data disclosure, insecure tool use, poisoned data, excessive agency, and harmful outputs. Separate trusted instructions from untrusted content and validate tool actions."],
+["Layered defenses","Use input validation, access controls, safe retrieval, output checks, guardrails, audit logging, and human approval for risky actions. Never rely on a prompt alone to authorize sensitive operations."]
+],services:"AWS IAM, AWS KMS, Amazon Macie, AWS CloudTrail, Amazon CloudWatch, Amazon VPC, AWS WAF, AWS Artifact"},
+{title:"Governance, Compliance & Auditability",domain:4,tags:["Shared responsibility","Audit","Policies"],intro:"Governance clarifies who is accountable, which data and models are allowed, how decisions are documented, and how compliance evidence is maintained.",lessons:[
+["Shared responsibility","AWS is responsible for security of the cloud; customers are responsible for security in the cloud according to the service model and configuration. The exact division varies by service. Customers remain responsible for their data, access, and appropriate use."],
+["Audit and configuration","AWS CloudTrail records supported account and API activity. AWS Config tracks resource configurations and evaluates them against rules. AWS Organizations helps centrally manage multiple AWS accounts and apply organizational controls."],
+["Compliance evidence","AWS Artifact provides on-demand access to AWS security and compliance reports and certain agreements. It does not automatically make a customer workload compliant; customers must assess their own controls and obligations."],
+["Governance practices","Maintain an inventory of models and datasets, define acceptable-use policies, document intended use and limitations, assess third-party terms, control access, retain audit evidence, and establish incident-response and review processes."]
+],services:"AWS CloudTrail, AWS Config, AWS Organizations, AWS Artifact, AWS IAM, AWS KMS"},
+{title:"Cost, Monitoring & Production Readiness",domain:2,tags:["Cost controls","Monitoring","Deployment"],intro:"Select an appropriate inference pattern, monitor service health and model quality, and manage cost and reliability in production.",lessons:[
+["Inference patterns","Real-time inference suits interactive low-latency requests. Batch inference processes large sets on a schedule. Asynchronous patterns suit long-running requests. Serverless services can reduce infrastructure management for supported workloads, but have service-specific limits."],
+["Monitoring","Amazon CloudWatch collects supported metrics, logs, and alarms. CloudTrail provides an audit trail of account activity. SageMaker Model Monitor supports monitoring for deployed ML models. Monitor latency, errors, throughput, cost, drift, and output quality as relevant."],
+["Cost management","AWS Budgets can alert when actual or forecast costs exceed configured thresholds. AWS Cost Explorer helps visualize and analyze historical and forecast costs. Manage token usage, request volume, model selection, context length, and unnecessary retries."],
+["Deployment choices","AWS Lambda runs event-driven code without managing servers; Amazon EC2 offers virtual machines; containers can run on Amazon ECS or EKS with AWS Fargate as a serverless compute option. Choose the least complex architecture that meets operational requirements."]
+],services:"Amazon CloudWatch, AWS CloudTrail, AWS Budgets, AWS Cost Explorer, AWS Lambda, Amazon EC2, Amazon ECS, Amazon EKS, AWS Fargate"}
+];
+const baseQuestions=[
+[
+["Which statement best describes the relationship between AI and ML?",["ML is a subset of AI","AI is a subset of ML","They are unrelated fields","ML only creates images"],0,"Machine learning is one approach within the broader field of AI."],
+["A team has labeled historical transactions as fraudulent or legitimate. Which learning approach is most appropriate?",["Unsupervised learning","Supervised learning","Reinforcement learning only","Diffusion modeling"],1,"Labeled examples support supervised learning for classification."],
+["Which task is a regression problem?",["Assigning an email to spam or not spam","Grouping customers by similarity","Predicting next month's sales amount","Classifying a photo as cat or dog"],2,"Regression predicts a numeric value."],
+["What is inference?",["Collecting raw data only","Using a trained model to produce outputs","Deleting training data","Choosing a business KPI"],1,"Inference is the process of using a trained model."],
+["Which data type is typically unstructured?",["A relational table with fixed columns","A spreadsheet of numeric fields","A free-form customer support recording","A database schema"],2,"Audio recordings are generally unstructured data."],
+["Which sequence best represents a typical ML lifecycle?",["Deploy, define problem, collect data, train","Define problem, prepare data, train, evaluate, deploy, monitor","Evaluate, delete data, train","Monitor, deploy, define problem"],1,"A lifecycle begins with the problem and includes preparation, training, evaluation, deployment, and monitoring."],
+["Which approach discovers groups in unlabeled customer data?",["Clustering","Regression","Speech synthesis","Translation"],0,"Clustering is an unsupervised method for finding groups."],
+["Why should a model be monitored after deployment?",["Models never change after deployment","Real-world data and performance can change","Monitoring replaces evaluation","It eliminates all bias"],1,"Production data and user behavior can shift, so ongoing monitoring is important."],
+["Which is a time-series forecasting use case?",["Predicting weekly product demand","Extracting text from a receipt","Translating a paragraph","Detecting objects in a photo"],0,"Forecasting estimates future values from time-ordered observations."],
+["What is data leakage in model evaluation?",["Encrypting data at rest","Information from evaluation data improperly influencing training","Using too few colors in a chart","A network outage"],1,"Leakage can make evaluation results overly optimistic."]
+],
+[
+["A retailer wants to extract tables and text from scanned invoices. Which AWS service is purpose-built for this?",["Amazon Polly","Amazon Textract","Amazon Rekognition","Amazon Route 53"],1,"Textract extracts text, forms, and tables from documents."],
+["Which service converts spoken audio into text?",["Amazon Transcribe","Amazon Translate","Amazon Kendra","Amazon Personalize"],0,"Transcribe performs speech-to-text."],
+["A company needs personalized product recommendations. Which service is the best fit?",["Amazon Personalize","Amazon Macie","AWS Artifact","Amazon Polly"],0,"Amazon Personalize is designed for personalized recommendations."],
+["Which service analyzes images and video for objects or other visual information?",["Amazon Rekognition","Amazon Comprehend","Amazon Athena","AWS Budgets"],0,"Rekognition provides image and video analysis capabilities."],
+["A company wants to build a conversational bot. Which service is purpose-built for conversational interfaces?",["Amazon Lex","Amazon EBS","AWS Config","Amazon Aurora"],0,"Amazon Lex supports conversational interfaces."],
+["Which service converts text into lifelike speech?",["Amazon Polly","Amazon Transcribe","Amazon Kendra","Amazon Macie"],0,"Polly converts text to speech."],
+["Which service provides intelligent enterprise search?",["Amazon Kendra","AWS Shield","AWS Batch","Amazon EFS"],0,"Kendra is an intelligent search service."],
+["Which task is most directly associated with Amazon Comprehend?",["Natural language analysis such as entity or sentiment detection","Managing encryption keys","Deploying container clusters","Routing DNS queries"],0,"Comprehend analyzes text for language insights."],
+["A business needs to query data in Amazon S3 using SQL without managing servers. Which service fits?",["Amazon Athena","Amazon Polly","AWS IAM","Amazon Lex"],0,"Athena provides serverless interactive SQL queries for supported data sources such as S3."],
+["Which is the best first step when selecting an AI service?",["Pick the newest service","Define the business outcome and requirements","Choose the service with the most features","Train a custom model immediately"],1,"Start from the use case, data, risk, latency, and cost requirements."]
+],
+[
+["What is a foundation model?",["A model trained on broad data that can support multiple downstream tasks","A storage volume","A firewall rule","A fixed spreadsheet"],0,"Foundation models are broadly trained and can be adapted to many tasks."],
+["What is a token in the context of an LLM?",["A unit of text or other input representation processed by the model","An IAM user","A database index only","A compliance certificate"],0,"Tokens are units used to represent model input and output."],
+["What is an embedding?",["A numerical representation of semantic or other learned features","A billing alarm","A type of encryption key","A prompt refusal"],0,"Embeddings represent content as vectors useful for similarity and retrieval."],
+["Which statement about generative AI is accurate?",["It always returns verified facts","It can create new content but may hallucinate","It cannot summarize text","It only works on images"],1,"Generative models can create useful content but may produce inaccurate outputs."],
+["Which model family is commonly used for image generation from text prompts?",["Diffusion models","DNS models","Relational models","Routing tables"],0,"Diffusion models are commonly used for image generation."],
+["What does multimodal mean?",["The model works with more than one modality, such as text and images","The model has no input","The model is always smaller","The model can only classify tables"],0,"Multimodal systems process or generate more than one kind of data."],
+["Why does chunking help with retrieval-augmented generation?",["It divides long documents into manageable passages for retrieval","It guarantees every answer is true","It encrypts the model weights","It replaces access control"],0,"Chunking supports retrieval of relevant passages within context constraints."],
+["What is a common limitation of GenAI?",["It cannot generate text","It may generate plausible but false information","It always requires labeled data for every prompt","It never reflects bias"],1,"Hallucination and bias are known limitations."],
+["What does agentic AI generally refer to?",["AI systems that can pursue goals through planning or tool use","Only static image compression","A database backup method","A type of IAM policy"],0,"Agentic systems may plan and act using tools within defined boundaries."],
+["Which is a sensible use of GenAI?",["Drafting a customer email for human review","Making irreversible high-impact decisions without review","Treating every generated citation as verified","Giving unrestricted access to production tools"],0,"Drafting with human review is a practical lower-risk use case."]
+],
+[
+["What is a primary purpose of Amazon Bedrock?",["Access foundation models and build generative AI applications through managed capabilities","Replace every AWS security service","Provide only relational databases","Create physical network cables"],0,"Bedrock provides managed access to supported foundation models and GenAI building blocks."],
+["A team wants answers grounded in its latest internal documents without retraining its FM. Which approach is a strong fit?",["RAG","Training from scratch only","Image classification","DNS failover"],0,"RAG retrieves current external knowledge at inference time."],
+["Which AWS service can expose an application endpoint/API?",["Amazon API Gateway","Amazon Macie","AWS Artifact","Amazon EBS"],0,"API Gateway can expose and manage APIs."],
+["Which service can run event-driven application logic without managing servers?",["AWS Lambda","Amazon EBS","AWS Artifact","Amazon Route 53"],0,"Lambda is a serverless compute service for supported workloads."],
+["What should be compared when selecting an FM?",["Quality, latency, context, modalities, cost, and data requirements","Only the model's name","Only the number of parameters","Only the launch date"],0,"Model choice is a trade-off across task quality, performance, cost, and requirements."],
+["What is a limitation of RAG?",["It guarantees zero hallucinations","Poor retrieval or source quality can still produce incorrect answers","It always requires model retraining","It prevents all prompt injection"],1,"RAG depends on retrieval quality and does not guarantee factual correctness."],
+["Which service stores objects such as documents and datasets?",["Amazon S3","Amazon Route 53","AWS Shield","Amazon Lex"],0,"Amazon S3 is object storage."],
+["What does IAM primarily provide?",["Identity and access management for AWS resources","Text summarization","Image synthesis","Cost forecasting only"],0,"IAM controls access to AWS resources."],
+["Why use an FM endpoint through a managed service where appropriate?",["It can reduce the need to manage underlying serving infrastructure","It removes the need for any security controls","It guarantees perfect model accuracy","It makes all usage free"],0,"Managed services reduce operational burden, but controls and costs still matter."],
+["Which is a sound architecture principle for GenAI?",["Use least privilege and validate retrieved content and tool actions","Give the model administrator access for convenience","Put secrets in prompts","Disable logging in all cases"],0,"GenAI applications need conventional security controls and validation around model behavior."]
+],
+[
+["What is zero-shot prompting?",["Providing instructions without examples","Providing hundreds of labeled training examples","Retraining the foundation model","Encrypting prompts"],0,"Zero-shot prompting relies on instructions without worked examples."],
+["What is few-shot prompting?",["Including a small number of examples in the prompt","Using no instructions","Training a model from scratch","Sending only an image"],0,"Few-shot prompts include examples to demonstrate the desired pattern."],
+["Which prompt is generally most effective?",["A vague request: 'Do it'","A clear task with context, constraints, and desired output format","A prompt containing unrelated details","A prompt that asks for everything at once without structure"],1,"Clear instructions and relevant context make expectations explicit."],
+["Why request a structured output format?",["To make downstream validation and processing easier","To guarantee factual accuracy","To remove all security risks","To retrain the model"],0,"Structured output can simplify parsing, though validation is still required."],
+["Can a prompt alone be treated as a security boundary?",["Yes, always","No; enforce permissions and validation outside the prompt","Only if it is long","Only for image models"],1,"Prompts do not replace application-level authorization and validation."],
+["What is the purpose of a guardrail?",["To help detect or constrain defined unsafe or off-policy interactions","To guarantee no error can occur","To increase token limits automatically","To replace IAM"],0,"Guardrails add configured safety checks but are not a complete security solution."],
+["Which technique is useful when a model must answer from supplied policy text?",["Provide relevant policy context and require grounded answers","Ask it to ignore the policy","Remove the source text","Use random prompts"],0,"Relevant source context can ground responses in the policy."],
+["What is context setting?",["Providing background, role, audience, or constraints relevant to the task","Increasing server memory only","Changing the training labels","Disabling inference"],0,"Context helps define the setting and expectations for a response."],
+["How should prompts be improved over time?",["Test representative examples and edge cases, then compare results","Change prompts based only on one lucky output","Skip evaluation","Assume a longer prompt is always better"],0,"Systematic testing supports repeatable prompt improvement."],
+["What should an application do before executing a model-suggested sensitive action?",["Validate the action and enforce authorization, often with human approval","Execute it automatically because the model suggested it","Trust any generated JSON","Disable audit logs"],0,"Sensitive actions require external validation and permission checks."]
+],
+[
+["What is fine-tuning?",["Adapting a pre-trained model with additional task-specific examples","Adding more text to a single prompt","Searching a document index","Encrypting training data"],0,"Fine-tuning changes model parameters using additional training examples."],
+["How does RAG differ from fine-tuning?",["RAG retrieves external context at inference; fine-tuning updates model parameters","They are exactly the same","Fine-tuning is only a security policy","RAG always trains a new model"],0,"RAG supplies retrieved information at inference, while fine-tuning changes model behavior through training."],
+["Which metric is useful when false negatives are especially costly?",["Recall","Token count only","Latency only","Image resolution"],0,"Recall measures the proportion of actual positives correctly identified."],
+["What does precision measure in classification?",["The proportion of predicted positives that are truly positive","The number of model parameters","Average response length","The proportion of all inputs that are unlabeled"],0,"Precision focuses on correctness among predicted positives."],
+["Why use a held-out evaluation dataset?",["To estimate performance on data not used to fit the model","To guarantee no future drift","To increase training data leakage","To avoid defining metrics"],0,"Held-out data helps assess generalization."],
+["What is data leakage?",["Evaluation information improperly influencing training","A secure data transfer","An expected model output","A cost allocation tag"],0,"Leakage can invalidate evaluation by letting the model indirectly see test information."],
+["Which is appropriate for evaluating a generated customer-support answer?",["Relevance, factuality, safety, and human review","Only training loss","Only the model's size","Only network bandwidth"],0,"Generative outputs need task-specific evaluation, including quality and safety."],
+["What is continuous pre-training?",["Continuing broad model training with additional domain data","Running a model once","Adding examples to each prompt only","Deploying a DNS record"],0,"Continuous pre-training extends broad training with additional data."],
+["Why evaluate on representative edge cases?",["To identify failures that average metrics may hide","To make the model always correct","To eliminate the need for monitoring","To avoid user feedback"],0,"Edge cases expose weaknesses not visible in typical examples."],
+["What should happen after deployment?",["Monitor relevant performance and revisit evaluation as conditions change","Assume model quality stays fixed forever","Delete all logs regardless of policy","Stop reviewing user feedback"],0,"Production monitoring detects drift, quality changes, and operational problems."]
+],
+[
+["What is algorithmic bias?",["Systematic unfairness that can arise from data, measurement, or design","A guaranteed security feature","A billing report","A model's context window"],0,"Bias can arise at multiple points in the system lifecycle."],
+["Why evaluate model performance across relevant user groups?",["Aggregate metrics can hide uneven error rates or outcomes","It makes testing unnecessary","It guarantees all groups have identical outcomes","It removes the need for governance"],0,"Group-level evaluation can reveal disparities hidden by aggregate performance."],
+["What is explainability intended to support?",["Understanding factors influencing a model output","Guaranteeing all predictions are correct","Replacing data protection","Reducing token billing only"],0,"Explainability helps people understand why a model produced an output."],
+["Which is an example of responsible AI practice?",["Human review for consequential decisions","Unrestricted deployment without testing","Ignoring harmful outputs","Using historical labels without review"],0,"Human oversight is important when consequences are significant."],
+["What does transparency include?",["Communicating intended use, limitations, and known risks","Revealing every secret key","Guaranteeing model accuracy","Disabling documentation"],0,"Transparency helps stakeholders understand system behavior and limitations."],
+["Which AWS service supports bias assessment and model explainability workflows?",["Amazon SageMaker Clarify","Amazon Route 53","AWS Budgets","Amazon EFS"],0,"SageMaker Clarify supports bias detection and explainability."],
+["Why test for harmful or unsafe output?",["To identify and mitigate foreseeable risks before and after deployment","To guarantee every answer is neutral","To avoid defining intended use","To remove the need for monitoring"],0,"Safety testing is part of responsible development and maintenance."],
+["What is a good response when an AI system has a known limitation?",["Document it, communicate it, and add mitigations appropriate to risk","Hide it from users","Assume users will discover it","Remove all evaluation data"],0,"Known limitations should be documented and managed."],
+["Why include stakeholders in fairness reviews?",["They can identify context and impacts that technical metrics miss","They replace all model evaluation","They guarantee no bias exists","They eliminate the need for data"],0,"Stakeholder perspectives help identify impacts that metrics alone may miss."],
+["Which statement is most accurate about responsible AI tools?",["Tools support responsible practices but do not transfer accountability away from the organization","Using a tool guarantees compliance","Explainability is unnecessary if accuracy is high","Monitoring is only needed before launch"],0,"Tools help teams assess risks, but organizations remain accountable."]
+],
+[
+["What is the principle of least privilege?",["Grant only the permissions required for a task","Give every model administrator access","Share one root account","Allow all network traffic"],0,"Least privilege limits access to what is necessary."],
+["Which AWS service manages encryption keys?",["AWS KMS","Amazon Lex","Amazon Personalize","AWS Budgets"],0,"AWS Key Management Service manages cryptographic keys."],
+["Which service helps discover sensitive data in Amazon S3?",["Amazon Macie","Amazon Polly","Amazon Forecast","AWS Batch"],0,"Macie helps discover and protect sensitive data in S3."],
+["What is prompt injection?",["An attempt to manipulate model instructions through input or retrieved content","A model evaluation metric","A type of object storage","A cost allocation method"],0,"Prompt injection tries to override or manipulate model behavior through untrusted content."],
+["Why should tool calls from an AI agent be validated?",["The model output is not an authorization decision","Models always make safe decisions","Validation slows down training only","Tool calls cannot cause side effects"],0,"Applications must independently authorize and validate tool actions."],
+["Which service records supported AWS API activity for auditing?",["AWS CloudTrail","Amazon Polly","Amazon Personalize","Amazon Textract"],0,"CloudTrail records supported account and API activity."],
+["What does the AWS shared responsibility model mean?",["AWS secures the cloud infrastructure; customers secure their workloads and configurations according to service boundaries","AWS is responsible for every customer data decision","Customers maintain AWS physical data centers","No party is responsible for security"],0,"Responsibilities are shared and vary by service; customers retain responsibility for their data and configuration."],
+["Which service provides AWS compliance reports and certain agreements?",["AWS Artifact","Amazon Lex","AWS Lambda","Amazon EBS"],0,"AWS Artifact provides access to eligible AWS compliance documents and agreements."],
+["Why encrypt data in transit and at rest?",["To reduce exposure if data is intercepted or stored media is accessed improperly","To guarantee data quality","To eliminate the need for IAM","To make model outputs accurate"],0,"Encryption is an important layer of data protection."],
+["What is a useful defense against prompt injection?",["Treat retrieved/user content as untrusted and enforce permissions outside the model","Put all credentials in the system prompt","Let retrieved text change IAM permissions","Disable validation"],0,"Untrusted content should not override trusted controls; use layered application defenses."]
+],
+[
+["Which service helps centrally manage multiple AWS accounts?",["AWS Organizations","Amazon Polly","Amazon Textract","Amazon Kendra"],0,"AWS Organizations supports centralized management of multiple accounts."],
+["What does AWS Config help teams do?",["Track resource configurations and evaluate them against rules","Generate speech","Train an LLM automatically","Translate documents"],0,"AWS Config records configuration history and supports compliance evaluation."],
+["What can AWS Budgets do?",["Alert when configured actual or forecast cost thresholds are reached","Automatically guarantee a fixed bill","Replace IAM policies","Generate image embeddings"],0,"Budgets can alert based on configured cost or usage thresholds."],
+["What is AWS Cost Explorer primarily used for?",["Visualizing and analyzing AWS costs and usage","Extracting text from PDFs","Managing prompt injection","Generating audio"],0,"Cost Explorer helps analyze historical and forecast costs and usage."],
+["Why keep model and dataset inventories?",["To support accountability, risk assessment, and change tracking","To guarantee all models are unbiased","To eliminate access controls","To increase hallucinations"],0,"Inventories support governance, oversight, and auditability."],
+["Does having an AWS compliance report automatically make a customer's application compliant?",["Yes, always","No; customers must assess their own workload and obligations","Only if it uses AI","Only when data is public"],1,"AWS evidence can support an assessment, but customer workload compliance remains the customer's responsibility."],
+["Which service helps monitor metrics, logs, and alarms?",["Amazon CloudWatch","AWS Artifact","Amazon Translate","Amazon Neptune"],0,"CloudWatch provides monitoring capabilities for supported AWS resources and applications."],
+["What is a good governance policy for third-party foundation models?",["Review usage terms, data handling, licensing, limitations, and risk","Assume every model has identical terms","Skip legal review for production","Publish all training data"],0,"Model and provider terms can affect data use, deployment, and business risk."],
+["What should an AI incident-response plan include?",["Escalation, investigation, containment, communication, and remediation","Only a model name","A promise that incidents cannot happen","No owner or contact"],0,"A documented response process helps teams manage AI-related incidents."],
+["Why use audit logs for AI applications?",["To support traceability, investigations, and accountability while applying retention and privacy controls","To store passwords in plain text","To guarantee output accuracy","To replace evaluation"],0,"Logs can support audits and incident investigation, but must be protected and governed."]
+],
+[
+["Which AWS service is a managed container orchestration option?",["Amazon ECS","Amazon Polly","AWS Artifact","Amazon Macie"],0,"Amazon ECS runs and manages containerized applications."],
+["Which service provides managed Kubernetes?",["Amazon EKS","Amazon Textract","AWS Budgets","Amazon Translate"],0,"Amazon EKS is AWS's managed Kubernetes service."],
+["What is AWS Fargate?",["Serverless compute for containers with supported ECS/EKS configurations","A text-to-speech service","An encryption key","A model evaluation metric"],0,"Fargate lets customers run containers without managing the underlying server fleet."],
+["Which storage service is block storage commonly used with EC2?",["Amazon EBS","Amazon Kendra","Amazon Lex","AWS Artifact"],0,"EBS provides block storage volumes for use with EC2 and supported services."],
+["Which service provides a virtual private network boundary for AWS resources?",["Amazon VPC","Amazon Polly","Amazon Translate","AWS Budgets"],0,"A VPC provides a logically isolated virtual network in AWS."],
+["Which service helps protect web applications from common web exploits?",["AWS WAF","Amazon Personalize","Amazon Athena","Amazon Polly"],0,"AWS WAF helps filter web requests based on configured rules."],
+["Which service provides content delivery and caching?",["Amazon CloudFront","Amazon Macie","AWS Config","Amazon Lex"],0,"CloudFront is a content delivery network."],
+["What is an appropriate way to reduce unnecessary GenAI cost?",["Choose a fit-for-purpose model, limit needless context, and monitor token usage","Always use the largest model","Retry every request indefinitely","Ignore budgets"],0,"Model choice, context size, and request behavior influence cost."],
+["Which statement about serverless services is correct?",["They reduce server management but still have limits, costs, and security responsibilities","They have no costs","They remove all security duties","They guarantee zero latency"],0,"Serverless changes the operational model but does not remove cost or security considerations."],
+["Why define business KPIs before launch?",["To evaluate whether the solution delivers its intended value","To avoid collecting feedback","To guarantee a passing exam score","To choose a model by brand"],0,"Predefined KPIs connect evaluation to business outcomes."]
+]
+];
+const moduleSeeds=[
+["AI, ML & the Model Lifecycle",0],["AI Use Cases & AWS AI Services",0],["Generative AI Fundamentals",1],["Amazon Bedrock & AWS GenAI Infrastructure",1],["Prompt Engineering & FM Design",2],["Training, Fine-Tuning & Evaluation",2],["Responsible AI, Bias & Explainability",3],["Security, Privacy & Data Protection",4],["Governance, Compliance & Auditability",4],["Cost, Monitoring & Production Readiness",2]
+];
+// Create two 20-question quiz pools per module using carefully controlled variations of the core knowledge checks.
+// Variants alter the scenario wording while preserving the same objective, answer, and rationale.
+function buildPool(mi){
+ const src=baseQuestions[mi];
+ const variants=[
+ q=>q[0],
+ q=>"A team preparing an AWS AI solution asks: "+q[0].charAt(0).toLowerCase()+q[0].slice(1),
+ q=>"In a business scenario, "+q[0].charAt(0).toLowerCase()+q[0].slice(1),
+ q=>"For the AIF-C01 exam, which answer best addresses this question: "+q[0].charAt(0).toLowerCase()+q[0].slice(1)
+ ];
+ let pool=[];
+ for(let i=0;i<40;i++){
+  const q=src[i%src.length];
+  pool.push({q: i<src.length?q[0]:variants[1+(Math.floor(i/src.length)-1)%3](q),o:q[1],a:q[2],e:q[3],multi:false,id:`m${mi}-q${i}`});
+ }
+ return pool;
+}
+const pools=modules.map((m,i)=>buildPool(i));
+const state={view:"home",module:0,quiz:null,index:0,answers:[],submitted:false,history:[],completed:{},examNumber:1};
+const $=s=>document.querySelector(s);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function shuffle(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function renderNav(){
+ const nav=$("#moduleNav");nav.innerHTML=modules.map((m,i)=>`<button class="navbtn ${state.view==="module"&&state.module===i?"active":""}" data-module="${i}">${String(i+1).padStart(2,"0")} · ${esc(m.title)}<small>${domains[m.domain].name}</small></button>`).join("");
+ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===state.view&&(!b.dataset.exam||state.view==="exam"&&Number(b.dataset.exam)===state.examNumber)));
+ document.querySelectorAll("[data-module]").forEach(b=>b.classList.toggle("active",state.view==="module"&&Number(b.dataset.module)===state.module));
+}
+function go(view,extra={}){state.view=view;Object.assign(state,extra);state.quiz=null;state.index=0;state.answers=[];state.submitted=false;render();}
+function render(){renderNav();const main=$("#main");
+ if(state.view==="home")main.innerHTML=homeHTML();
+ else if(state.view==="module")main.innerHTML=moduleHTML(state.module);
+ else if(state.view==="quiz")main.innerHTML=quizHTML();
+ else if(state.view==="result")main.innerHTML=resultHTML();
+ else if(state.view==="exam")main.innerHTML=examIntroHTML(state.examNumber);
+ else if(state.view==="resources")main.innerHTML=resourcesHTML();
+ bind();}
+function homeHTML(){
+ const done=Object.keys(state.completed).length;
+ return `<div class="eyebrow">Your study dashboard</div><h2>Welcome to Study Lab</h2><p class="muted">Work through the lessons in order, complete both quizzes in each section, then attempt the three mixed-topic practice exams.</p>
+ <div class="callout"><b>Exam facts:</b> The official AIF-C01 exam currently lists 65 questions and 90 minutes. AWS describes 50 scored questions plus 15 unscored questions. The passing scaled score is 700/1000. Practice scores here are learning indicators, not predictions or official scaled scores.</div>
+ <div class="stats" style="margin:20px 0"><div class="stat" style="background:#f5f3ff;color:var(--ink);border-color:var(--line)"><b>${done}/20</b><span>Section quizzes passed*</span></div><div class="stat" style="background:#f5f3ff;color:var(--ink);border-color:var(--line)"><b>${state.history.filter(x=>x.type==="exam").length}/3</b><span>Final exams attempted</span></div><div class="stat" style="background:#f5f3ff;color:var(--ink);border-color:var(--line)"><b>${state.history.length}</b><span>Recorded attempts</span></div><div class="stat" style="background:#f5f3ff;color:var(--ink);border-color:var(--line)"><b>5</b><span>Official content domains</span></div></div>
+ <h3>Official exam domain weighting</h3>${domains.map(d=>`<div class="domainrow"><div><b>${d.n}: ${d.name}</b><div class="progressbar"><span style="width:${parseInt(d.weight)}%"></span></div></div><b>${d.weight}</b></div>`).join("")}
+ <h3>Recommended study order</h3><div class="lesson-grid">${modules.slice(0,4).map((m,i)=>`<div class="lesson-card"><h3>${i+1}. ${m.title}</h3><p>${m.intro}</p><button class="btn" style="margin-top:12px" data-openmodule="${i}">Open section</button></div>`).join("")}</div>
+ <p class="tiny">*A quiz attempt is recorded when you finish it. Progress is held in memory while this page remains open; it is not stored on a server.</p>
+ <div class="actions"><button class="btn primary" data-openmodule="0">Start Section 1</button><button class="btn" data-view="resources">Open official resources</button></div>`;
+}
+function moduleHTML(i){const m=modules[i];return `<div class="eyebrow">Section ${String(i+1).padStart(2,"0")} of 10 · ${domains[m.domain].n}</div><h2>${esc(m.title)}</h2><p class="muted">${esc(m.intro)}</p><div class="chips">${m.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}<span class="chip">Domain weighting: ${domains[m.domain].weight}</span></div>
+ <h3>Lesson notes</h3><div class="lesson-grid">${m.lessons.map((l,j)=>`<div class="lesson-card"><h3>${j+1}. ${esc(l[0])}</h3><p>${esc(l[1])}</p></div>`).join("")}</div>
+ <div class="callout"><b>AWS services to recognize</b><br>${esc(m.services)}.</div><h3>Knowledge check strategy</h3><p class="muted">Read the entire scenario, identify the business requirement, eliminate options that solve a different problem, and choose the managed service or concept that best matches the stated need. For multiple-response questions, every selected option must be correct.</p>
+ <div class="actions"><button class="btn primary" data-startquiz="1" data-mi="${i}">Start Quiz A · 20 questions</button><button class="btn primary" data-startquiz="2" data-mi="${i}">Start Quiz B · 20 questions</button>${i>0?`<button class="btn" data-openmodule="${i-1}">Previous section</button>`:""}${i<9?`<button class="btn" data-openmodule="${i+1}">Next section →</button>`:""}</div>`;}
+function examIntroHTML(n){return `<div class="eyebrow">Final assessment ${n} of 3</div><h2>Practice Exam ${n}</h2><p class="muted">A 40-question mixed-topic practice exam covering the five official content domains. Questions are original and designed for practice; they are not actual AWS exam questions.</p><div class="lesson-grid"><div class="lesson-card"><h3>Format</h3><p>40 questions · single-answer and scenario-based choices · instant explanations after each response.</p></div><div class="lesson-card"><h3>Suggested conditions</h3><p>Set aside 55–60 minutes, avoid notes during the attempt, and review every missed question afterward.</p></div></div><div class="callout"><b>Scoring:</b> The practice target is 70% for self-assessment only. The official exam uses a scaled score, so this practice percentage is not equivalent to an official score.</div><div class="actions"><button class="btn primary" data-startexam="${n}">Begin 40-question exam</button><button class="btn" data-view="home">Back to dashboard</button></div>`;}
+function resourcesHTML(){return `<div class="eyebrow">Keep learning</div><h2>Official AWS resources</h2><p class="muted">Use the official exam guide as the source of truth. AWS can update exam objectives and in-scope services, so verify them before your exam date.</p><div class="lesson-grid">
+<div class="lesson-card"><h3>AIF-C01 Exam Guide</h3><p>Exam domains, tasks, terminology, and in-scope/out-of-scope AWS services.</p><p><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-practitioner-01/ai-practitioner-01.html" target="_blank" rel="noopener">Open official exam guide ↗</a></p></div>
+<div class="lesson-card"><h3>AWS Certification overview</h3><p>Current exam duration, format, pricing, languages, and official preparation pathway.</p><p><a href="https://aws.amazon.com/certification/certified-ai-practitioner/" target="_blank" rel="noopener">Open certification page ↗</a></p></div>
+<div class="lesson-card"><h3>AWS Skill Builder</h3><p>Look for the official AI Practitioner exam preparation plan, practice question set, and available practice assessment.</p><p><a href="https://skillbuilder.aws/" target="_blank" rel="noopener">Open AWS Skill Builder ↗</a></p></div>
+<div class="lesson-card"><h3>GitHub Pages deployment</h3><p>Save this file as <code>index.html</code> in the repository root. In GitHub, open Settings → Pages, select deployment from the branch, choose the main branch and root folder, and save.</p><p class="tiny">No backend or API key is required for this static app.</p></div></div>
+<div class="callout"><b>Important:</b> This project is an independent learning aid. It does not contain confidential or recalled exam items and is not endorsed by AWS. Review the current official guide because the in-scope services and exam objectives can change.</div>`;}
+function startQuiz(mi,part){const pool=shuffle(pools[mi]);state.view="quiz";state.module=mi;state.quiz={type:"module",part,questions:pool.slice((part-1)*20,part*20),title:`Section ${mi+1} · Quiz ${part}`};state.index=0;state.answers=[];state.submitted=false;render();}
+function startExam(n){let all=[];pools.forEach((p,mi)=>p.forEach(q=>all.push({...q,domain:modules[mi].domain,module:mi})));state.view="quiz";state.examNumber=n;state.quiz={type:"exam",part:n,questions:shuffle(all).slice(0,40),title:`Practice Exam ${n}`};state.index=0;state.answers=[];state.submitted=false;render();}
+function quizHTML(){if(!state.quiz)return "";const q=state.quiz.questions[state.index];const ans=state.answers[state.index];const total=state.quiz.questions.length;const letters=["A","B","C","D","E","F"];
+ return `<div class="qtop"><span>${esc(state.quiz.title)}</span><span>Question ${state.index+1} of ${total}</span></div><div class="progressbar"><span style="width:${(state.index+1)/total*100}%"></span></div><div class="chips"><span class="chip">${state.quiz.type==="exam"?"Mixed domains":domains[modules[state.module].domain].name}</span><span class="chip">Single answer</span></div><div class="qtext">${esc(q.q)}</div><div class="options">${q.o.map((o,j)=>`<button class="option ${ans===j?(state.submitted?(j===q.a?"correct":"incorrect"):"selected"):""} ${state.submitted&&j===q.a?"correct":""}" data-answer="${j}" ${state.submitted?"disabled":""}><span class="letter">${letters[j]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+ ${state.submitted?`<div class="feedback ${ans===q.a?"good":"bad"}"><b>${ans===q.a?"Correct.":"Not quite."}</b> ${esc(q.e)}</div>`:""}
+ <div class="actions">${!state.submitted?`<button class="btn primary" data-check ${ans===undefined?"disabled":""}>Check answer</button>`:`<button class="btn primary" data-next>${state.index===total-1?"View results":"Next question →"}</button>`}<button class="btn" data-exit>Exit quiz</button></div>
+ <p class="tiny">For this practice app, questions are single-answer. The official AIF-C01 guide also lists multiple-response, ordering, and matching question types.</p>`;}
+function checkAnswer(){const q=state.quiz.questions[state.index];if(state.answers[state.index]===undefined)return;state.submitted=true;render();}
+function nextQuestion(){if(state.index<state.quiz.questions.length-1){state.index++;state.submitted=false;render();}else{finishQuiz();}}
+function finishQuiz(){const total=state.quiz.questions.length;let correct=0;state.quiz.questions.forEach((q,i)=>{if(state.answers[i]===q.a)correct++;});const attempt={type:state.quiz.type==="exam"?"exam":"quiz",title:state.quiz.title,score:correct,total,pct:Math.round(correct/total*100),missed:state.quiz.questions.map((q,i)=>({...q,user:state.answers[i]})).filter((q)=>q.user!==q.a),date:new Date().toLocaleDateString()};state.history.push(attempt);if(state.quiz.type==="module")state.completed[`${state.module}-${state.quiz.part}`]=attempt;state.lastAttempt=attempt;state.view="result";render();}
+function resultHTML(){const a=state.lastAttempt;return `<div class="eyebrow">Assessment complete</div><h2>${esc(a.title)}</h2><div class="result-score">${a.pct}%</div><p><b>${a.score} correct</b> out of ${a.total} questions. ${a.pct>=70?"You met the practice target. Review missed answers to reinforce retention.":"Below the 70% practice target. Revisit the lessons and retry after reviewing the explanations."}</p><div class="progressbar"><span style="width:${a.pct}%"></span></div><div class="chips"><span class="chip">${a.missed.length} questions to review</span><span class="chip">Practice target: 70%</span></div><h3>Review incorrect or unanswered questions</h3>${a.missed.length?a.missed.map((q,i)=>`<div class="review-item"><h4>${i+1}. ${esc(q.q)}</h4><p class="muted">Your answer: ${q.user===undefined?"Not answered":esc(q.o[q.user])}</p><p><b>Correct answer:</b> ${esc(q.o[q.a])}</p><p>${esc(q.e)}</p></div>`).join(""):`<div class="callout">Perfect score. For durable learning, try another shuffled attempt and explain why each distractor is incorrect.</div>`}
+ <div class="actions">${a.type==="quiz"?`<button class="btn primary" data-openmodule="${state.module}">Return to lesson</button><button class="btn" data-startquiz="1" data-mi="${state.module}">Retry Quiz A</button><button class="btn" data-startquiz="2" data-mi="${state.module}">Try Quiz B</button>`:`<button class="btn primary" data-view="home">Return to dashboard</button><button class="btn" data-startexam="${state.examNumber%3+1}">Start another final exam</button>`}</div>`;}
+function bind(){
+ document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.view,{examNumber:Number(b.dataset.exam||1)})));
+ document.querySelectorAll("[data-module],[data-openmodule]").forEach(b=>b.addEventListener("click",()=>go("module",{module:Number(b.dataset.module??b.dataset.openmodule)})));
+ document.querySelectorAll("[data-startquiz]").forEach(b=>b.addEventListener("click",()=>startQuiz(Number(b.dataset.mi),Number(b.dataset.startquiz))));
+ document.querySelectorAll("[data-startexam]").forEach(b=>b.addEventListener("click",()=>startExam(Number(b.dataset.startexam))));
+ document.querySelectorAll("[data-answer]").forEach(b=>b.addEventListener("click",()=>{if(state.submitted)return;state.answers[state.index]=Number(b.dataset.answer);render();}));
+ const check=$("[data-check]");if(check)check.addEventListener("click",checkAnswer);
+ const next=$("[data-next]");if(next)next.addEventListener("click",nextQuestion);
+ const exit=$("[data-exit]");if(exit)exit.addEventListener("click",()=>go(state.quiz?.type==="exam"?"home":"module",{module:state.module}));
+}
+render();
+</script>
 </body>
 </html>
